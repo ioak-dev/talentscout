@@ -1,0 +1,8 @@
+main {
+  margin-top: 42px;
+  min-height: calc(100vh - 42px);
+}
+
+.page {
+  padding: 0px 12px;
+}
