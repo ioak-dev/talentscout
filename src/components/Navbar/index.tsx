@@ -3,7 +3,7 @@
 import Link from "next/link";
 import "./style.css";
 import { Button } from "basicui";
-import { DarkModeState } from "@/store/profile";
+import { DarkModeState } from "@/store/ProfileStore";
 import { useEffect, useState } from "react";
 
 const Navbar = () => {

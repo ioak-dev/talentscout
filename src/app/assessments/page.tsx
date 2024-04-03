@@ -1,14 +1,56 @@
 "use client";
 
 import ContextBar from "@/components/ContextBar";
-import { Button } from "basicui";
+import {
+  Button,
+  Input,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
+  ThemeType,
+} from "basicui";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
-import { getAssessments } from "./service";
+import { useEffect, useState } from "react";
+import { getAssessments, saveAssessment } from "./service";
+import { Assessment } from "@/types/Assessment";
+import { Authorization } from "@/types/Authorization";
+import { AuthorizationState } from "@/store/AuthorizationStore";
 
-export default function Assessments() {
+export default function AssessmentsPage() {
+  const [authorization, setAuthorization] = useState<Authorization>({});
   const router = useRouter();
-  const newAssessment = () => {};
+  const [data, setData] = useState<Assessment[]>();
+  const [isNewAssessmentDialogOpen, setIsNewAssessmentDialogOpen] =
+    useState(false);
+  const [newAssignmentForm, setNewAssignmentForm] = useState<Assessment>({
+    name: "",
+  });
+
+  useEffect(() => {
+    AuthorizationState.subscribe((message) => {
+      console.log("**", message);
+      setAuthorization(message);
+    });
+  }, []);
+
+  useEffect(() => {
+    setNewAssignmentForm({ name: "" });
+  }, [isNewAssessmentDialogOpen]);
+
+  const handleChange = (event: any) => {
+    setNewAssignmentForm({
+      ...newAssignmentForm,
+      [event.currentTarget.name]: event.currentTarget.value,
+    });
+  };
+
+  const handleSaveNewAssignment = () => {
+    saveAssessment(newAssignmentForm).then((response: any) => {
+      setIsNewAssessmentDialogOpen(false);
+      fetchAssessments();
+    });
+  };
 
   const manageAssessment = (id: string) => {
     router.push(`/assessment?id=${id}`);
@@ -21,62 +63,82 @@ export default function Assessments() {
   };
 
   useEffect(() => {
-    getAssessments().then((response: any) => {
-      if (response?.results) {
-        console.log(response?.results);
-      }
+    if (authorization.isAuth) {
+      fetchAssessments();
+    }
+  }, [authorization]);
+
+  const fetchAssessments = () => {
+    getAssessments(authorization).then((response: any) => {
+      setData(response);
     });
-  }, []);
+  };
 
   return (
-    <div>
-      <ContextBar title="Assessments list">
-        <Button onClick={newAssessment}>New assessment</Button>
-      </ContextBar>
-      <div className="page">
-        <table className="basicui-table">
-          <thead>
-            <tr>
-              <th>Assessment name</th>
-              <th>Created on</th>
-              <th>Status</th>
-              <th>Assessment Duration</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              tabIndex={0}
-              onClick={() => manageAssessment("1")}
-              onKeyDown={(event) => handleKeydown(event, "1")}
-            >
-              <td>Lorem ipsum</td>
-              <td>Lorem ipsum</td>
-              <td>Lorem ipsum</td>
-              <td>Lorem ipsum</td>
-            </tr>
-            <tr
-              tabIndex={0}
-              onClick={() => manageAssessment("2")}
-              onKeyDown={(event) => handleKeydown(event, "2")}
-            >
-              <td>Lorem ipsum</td>
-              <td>Lorem ipsum</td>
-              <td>Lorem ipsum</td>
-              <td>Lorem ipsum</td>
-            </tr>
-            <tr
-              tabIndex={0}
-              onClick={() => manageAssessment("3")}
-              onKeyDown={(event) => handleKeydown(event, "3")}
-            >
-              <td>Lorem ipsum</td>
-              <td>Lorem ipsum</td>
-              <td>Lorem ipsum</td>
-              <td>Lorem ipsum</td>
-            </tr>
-          </tbody>
-        </table>
+    <>
+      <div>
+        <ContextBar title="Assessments list">
+          <Button onClick={() => setIsNewAssessmentDialogOpen(true)}>
+            New assessment
+          </Button>
+        </ContextBar>
+        <div className="page">
+          <table className="basicui-table theme-default table-hover">
+            <thead>
+              <tr>
+                <th>Assessment name</th>
+                <th>Created on</th>
+                <th>Status</th>
+                <th>Responses</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data?.map((item, index) => (
+                <tr
+                  key={index}
+                  tabIndex={0}
+                  onClick={() => manageAssessment(item.id || "")}
+                  onKeyDown={(event) => handleKeydown(event, item.id || "")}
+                >
+                  <td>{item.name}</td>
+                  <td>{item.createdDate}</td>
+                  <td>{item.status}</td>
+                  <td>{5}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
+      <Modal
+        isOpen={isNewAssessmentDialogOpen}
+        onClose={() => setIsNewAssessmentDialogOpen(false)}
+      >
+        <ModalHeader
+          onClose={() => setIsNewAssessmentDialogOpen(false)}
+          heading="Create new assessment"
+        />
+
+        <ModalBody>
+          <div className="new-assessment-dialog">
+            <Input
+              name="name"
+              value={newAssignmentForm.name}
+              label="Assessment name"
+              onInput={handleChange}
+              autoFocus
+            />
+          </div>
+        </ModalBody>
+        <ModalFooter>
+          <Button theme={ThemeType.primary} onClick={handleSaveNewAssignment}>
+            Save
+          </Button>
+          <Button onClick={() => setIsNewAssessmentDialogOpen(false)}>
+            Close
+          </Button>
+        </ModalFooter>
+      </Modal>
+    </>
   );
 }

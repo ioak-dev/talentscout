@@ -6,7 +6,8 @@ import "./globals.css";
 import "./layout.css";
 import Navbar from "@/components/Navbar";
 import { useEffect, useState } from "react";
-import { DarkModeState } from "@/store/profile";
+import { DarkModeState } from "@/store/ProfileStore";
+import { useInitialization } from "@/lib/InitializationHook";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -15,6 +16,9 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+  useInitialization();
+
   const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {

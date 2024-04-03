@@ -4,28 +4,33 @@ import ContextBar from "@/components/ContextBar";
 import ObjectiveQuestion from "@/components/ObjectiveQuestion";
 import {
   Button,
+  Input,
   Tab,
   TabDetail,
   TabHeader,
   Tabs,
   Textarea,
-  ThemeType
+  ThemeType,
 } from "basicui";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./style.css";
+import { Assessment } from "@/types/Assessment";
+import { deleteAssessmentById, getAssessmentById, saveAssessmentById } from "./service";
 
 const sampleData = require("./data.json");
-console.log(sampleData);
 
-export default function Assessment() {
+export default function AssessmentPage() {
+  const [assessmentData, setAssessmentData] = useState<Assessment>({
+    name: "",
+  });
   const [state, setState] = useState<any>({ ...sampleData });
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const handleChange = (event: any) => {
-    setState({
-      ...state,
+  const handleAssessmentDataChange = (event: any) => {
+    setAssessmentData({
+      ...assessmentData,
       [event.currentTarget.name]: event.currentTarget.value,
     });
   };
@@ -35,8 +40,20 @@ export default function Assessment() {
   };
 
   const saveAssessment = () => {
-    console.log(state);
+    saveAssessmentById(assessmentData?.id || "", assessmentData).then(
+      (response) => {
+        fetchAssessmentById();
+      }
+    );
   };
+
+  const handleDeleteAssessment = () => {
+    deleteAssessmentById(assessmentData?.id || "").then(
+      (response) => {
+        router.back();
+      }
+    );
+  }
 
   const [tab, setTab] = useState("1");
 
@@ -44,13 +61,25 @@ export default function Assessment() {
     setTab(_tab);
   };
 
+  useEffect(() => {
+    if (searchParams.has("id")) {
+      fetchAssessmentById();
+    }
+  }, [searchParams]);
+
+  const fetchAssessmentById = () => {
+    getAssessmentById(searchParams.get("id") || "").then((response) => {
+      setAssessmentData(response);
+    });
+  };
+
   return (
     <div>
-      <ContextBar title={searchParams.get("id") || ""}>
+      <ContextBar title={assessmentData.name}>
         <Button onClick={saveAssessment} theme={ThemeType.primary}>
           Save
         </Button>
-        <Button onClick={saveAssessment} theme={ThemeType.danger}>
+        <Button onClick={handleDeleteAssessment} theme={ThemeType.danger}>
           Delete
         </Button>
         <Button onClick={saveAssessment}>Close</Button>
@@ -60,12 +89,18 @@ export default function Assessment() {
           <Tab id="1">
             <TabHeader>Details</TabHeader>
             <TabDetail>
-              <form>
+              <form className="assessment-detail-form">
+                <Input
+                  label="Assessment name"
+                  name="name"
+                  value={assessmentData?.name}
+                  onInput={handleAssessmentDataChange}
+                />
                 <Textarea
                   label="Job description"
                   name="jobDescription"
-                  value={state.jobDescription}
-                  onInput={handleChange}
+                  value={assessmentData?.jobDescription}
+                  onInput={handleAssessmentDataChange}
                 />
               </form>
             </TabDetail>

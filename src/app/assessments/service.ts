@@ -1,8 +1,10 @@
-import { httpGet } from "@/lib/RestTemplate";
+import { httpGet, httpPost } from "@/lib/RestTemplate";
+import { Assessment } from "@/types/Assessment";
+import { Authorization } from "@/types/Authorization";
 
-export const getAssessments = (
-  authorization?: any
-) => {
+export const getAssessments = (authorization?: Authorization) => {
+  console.log(authorization);
+  
   return httpGet(`/assessment`, {
     headers: {
       Authorization: authorization?.access_token,
@@ -16,5 +18,22 @@ export const getAssessments = (
     })
     .catch((error) => {
       return Promise.resolve([]);
+    });
+};
+
+export const saveAssessment = (payload: Assessment, authorization?: any) => {
+  return httpPost(`/assessment`, payload, {
+    headers: {
+      Authorization: authorization?.access_token,
+    },
+  })
+    .then((response) => {
+      if (response.status === 200) {
+        return Promise.resolve(response.data);
+      }
+      return Promise.resolve({});
+    })
+    .catch((error) => {
+      return Promise.resolve({});
     });
 };

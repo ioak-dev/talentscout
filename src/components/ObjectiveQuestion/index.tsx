@@ -60,10 +60,9 @@ const ObjectiveQuestion = (props: Props) => {
             <Textarea value={props.question.question} rows="10" />
             <div className="objective-question__choices">
               {props.question.choices.map((item: string) => (
-                <div className="objective-question__choices__choice">
+                <div className="objective-question__choices__choice" key={item}>
                   <Radio
                     disabled
-                    key={item}
                     name={item}
                     checked={item === props.question.answer}
                   />
