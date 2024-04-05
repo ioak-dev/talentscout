@@ -29,7 +29,6 @@ export default function AssessmentsPage() {
 
   useEffect(() => {
     AuthorizationState.subscribe((message) => {
-      console.log("**", message);
       setAuthorization(message);
     });
   }, []);

@@ -58,8 +58,8 @@ const LoginPage = (props: Props) => {
             `talentprobe-refresh_token`,
             response.data.refresh_token
           );
+          AuthorizationState.next({ ...response.data, isAuth: true });
           router.push(searchParams.get("from") || "/assessments");
-          AuthorizationState.next({...response.data, isAuth: true});
         }
       }
     );
