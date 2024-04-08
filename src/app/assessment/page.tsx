@@ -16,11 +16,15 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import "./style.css";
 import { Assessment } from "@/types/Assessment";
-import { deleteAssessmentById, getAssessmentById, saveAssessmentById } from "./service";
+import {
+  deleteAssessmentById,
+  getAssessmentById,
+  saveAssessmentById,
+} from "./service";
+import withAuthValidation from "@/components/Authorization/withAuthValidation";
 
 const sampleData = require("./data.json");
-
-export default function AssessmentPage() {
+const AssessmentPage = () => {
   const [assessmentData, setAssessmentData] = useState<Assessment>({
     name: "",
   });
@@ -48,12 +52,10 @@ export default function AssessmentPage() {
   };
 
   const handleDeleteAssessment = () => {
-    deleteAssessmentById(assessmentData?.id || "").then(
-      (response) => {
-        router.back();
-      }
-    );
-  }
+    deleteAssessmentById(assessmentData?.id || "").then((response) => {
+      router.back();
+    });
+  };
 
   const [tab, setTab] = useState("1");
 
@@ -124,4 +126,6 @@ export default function AssessmentPage() {
       </div>
     </div>
   );
-}
+};
+
+export default withAuthValidation(AssessmentPage);

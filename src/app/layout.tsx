@@ -17,7 +17,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
 
-  useInitialization();
+  // useInitialization();
 
   const [darkMode, setDarkMode] = useState(false);
 

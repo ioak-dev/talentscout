@@ -16,8 +16,9 @@ import { getAssessments, saveAssessment } from "./service";
 import { Assessment } from "@/types/Assessment";
 import { Authorization } from "@/types/Authorization";
 import { AuthorizationState } from "@/store/AuthorizationStore";
+import withAuthValidation from "@/components/Authorization/withAuthValidation";
 
-export default function AssessmentsPage() {
+const AssessmentsPage = () => {
   const [authorization, setAuthorization] = useState<Authorization>({});
   const router = useRouter();
   const [data, setData] = useState<Assessment[]>();
@@ -140,4 +141,6 @@ export default function AssessmentsPage() {
       </Modal>
     </>
   );
-}
+};
+
+export default withAuthValidation(AssessmentsPage);
