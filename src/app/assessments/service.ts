@@ -3,8 +3,6 @@ import { Assessment } from "@/types/Assessment";
 import { Authorization } from "@/types/Authorization";
 
 export const getAssessments = (authorization?: Authorization) => {
-  console.log(authorization);
-  
   return httpGet(`/assessment`, {
     headers: {
       Authorization: authorization?.access_token,

@@ -1,7 +1,8 @@
 import { httpDelete, httpGet, httpPost, httpPut } from "@/lib/RestTemplate";
 import { Assessment } from "@/types/Assessment";
 
-export const getAssessmentById = (id: string, authorization?: any) => {
+export const getAssessmentById = (authorization: any, id: string) => {
+  console.log(authorization, id)
   return httpGet(`/assessment/${id}`, {
     headers: {
       Authorization: authorization?.access_token,

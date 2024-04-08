@@ -13,7 +13,7 @@ import {
   ThemeType,
 } from "basicui";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import "./style.css";
 import { Assessment } from "@/types/Assessment";
 import {
@@ -22,15 +22,34 @@ import {
   saveAssessmentById,
 } from "./service";
 import withAuthValidation from "@/components/Authorization/withAuthValidation";
+import {
+  PermissionType,
+  useRouteAuthorization,
+} from "@/lib/RouteAuthorizationHook";
+import { Authorization } from "@/types/Authorization";
+import { AuthorizationState } from "@/store/AuthorizationStore";
 
 const sampleData = require("./data.json");
+
 const AssessmentPage = () => {
+  const { hasPermissions, isRouteAuthorized } = useRouteAuthorization("1");
+  useLayoutEffect(() => {
+    hasPermissions([PermissionType.USER]);
+  }, []);
+  const [authorization, setAuthorization] = useState<Authorization>({});
+
   const [assessmentData, setAssessmentData] = useState<Assessment>({
     name: "",
   });
   const [state, setState] = useState<any>({ ...sampleData });
   const router = useRouter();
   const searchParams = useSearchParams();
+
+  useEffect(() => {
+    AuthorizationState.subscribe((message) => {
+      setAuthorization(message);
+    });
+  }, []);
 
   const handleAssessmentDataChange = (event: any) => {
     setAssessmentData({
@@ -67,13 +86,20 @@ const AssessmentPage = () => {
     if (searchParams.has("id")) {
       fetchAssessmentById();
     }
-  }, [searchParams]);
+  }, [authorization, searchParams]);
 
   const fetchAssessmentById = () => {
-    getAssessmentById(searchParams.get("id") || "").then((response) => {
-      setAssessmentData(response);
-    });
+    console.log(authorization);
+    if (authorization.isAuth) {
+      getAssessmentById(authorization, searchParams.get("id") || "").then((response) => {
+        setAssessmentData(response);
+      });
+    }
   };
+
+  if (!isRouteAuthorized) {
+    return <></>;
+  }
 
   return (
     <div>

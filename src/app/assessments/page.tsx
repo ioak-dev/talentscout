@@ -10,16 +10,24 @@ import {
   ModalHeader,
   ThemeType,
 } from "basicui";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { redirect, useRouter } from "next/navigation";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { getAssessments, saveAssessment } from "./service";
 import { Assessment } from "@/types/Assessment";
 import { Authorization } from "@/types/Authorization";
 import { AuthorizationState } from "@/store/AuthorizationStore";
-import withAuthValidation from "@/components/Authorization/withAuthValidation";
+import {
+  PermissionType,
+  useRouteAuthorization,
+} from "@/lib/RouteAuthorizationHook";
 
 const AssessmentsPage = () => {
+  const { hasPermissions, isRouteAuthorized } = useRouteAuthorization("1");
+  useLayoutEffect(() => {
+    hasPermissions([PermissionType.USER]);
+  }, []);
   const [authorization, setAuthorization] = useState<Authorization>({});
+  
   const router = useRouter();
   const [data, setData] = useState<Assessment[]>();
   const [isNewAssessmentDialogOpen, setIsNewAssessmentDialogOpen] =
@@ -73,6 +81,10 @@ const AssessmentsPage = () => {
       setData(response);
     });
   };
+
+  if (!isRouteAuthorized) {
+    return <></>;
+  }
 
   return (
     <>
