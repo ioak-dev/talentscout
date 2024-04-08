@@ -128,4 +128,5 @@ const AssessmentPage = () => {
   );
 };
 
-export default withAuthValidation(AssessmentPage);
+// export default withAuthValidation(AssessmentPage);
+export default AssessmentPage;

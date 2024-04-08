@@ -143,4 +143,5 @@ const AssessmentsPage = () => {
   );
 };
 
-export default withAuthValidation(AssessmentsPage);
+// export default withAuthValidation(AssessmentsPage);
+export default AssessmentsPage;
