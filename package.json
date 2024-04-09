@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@types/lodash": "^4.17.0",
     "authlite-form-widgets": "file:authlite-form-widgets-1.0.1.tgz",
     "axios": "^1.6.8",
     "basicui": "file:basicui-1.0.0.tgz",

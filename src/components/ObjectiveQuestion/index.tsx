@@ -9,8 +9,9 @@ import {
   Textarea,
   ThemeType,
 } from "basicui";
+import cloneDeep from "lodash/cloneDeep";
 import "./style.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface Props {
   question: { question: string; answer: string; choices: string[] };
@@ -21,24 +22,61 @@ interface Props {
 const ObjectiveQuestion = (props: Props) => {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
 
+  const [state, setState] = useState<{
+    question: string;
+    answer: string;
+    choices: string[];
+  }>({
+    question: "",
+    answer: "",
+    choices: [],
+  });
+
   const editQuestion = () => {};
 
   const deleteQuestion = () => {};
+
+  useEffect(() => {
+    setState(cloneDeep(props.question));
+  }, [props.question]);
+
+  const handleQuestionChange = (event: any) => {
+    setState({
+      ...state,
+      question: event.currentTarget.value || "",
+    });
+  };
+
+  const handleChoiceTextChange = (event: any, index: number) => {
+    const choices = [...state.choices];
+    choices[index] = event.currentTarget.value;
+    setState({ ...state, choices });
+  };
+
+  const handleSave = () => {
+    props.onChange(state);
+    setIsEditDialogOpen(false);
+  };
+
+  const handleClose = () => {
+    setState(cloneDeep(props.question));
+    setIsEditDialogOpen(false);
+  };
 
   return (
     <>
       <div className="objective-question">
         <div>
-          {props.index + 1}. {props.question.question}
+          {props.index + 1}. {props.question?.question}
         </div>
         <div className="objective-question__choices">
-          {props.question.choices.map((item: string) => (
+          {props.question?.choices.map((item) => (
             <Radio
               disabled
               key={item}
               label={item}
               name={item}
-              checked={item === props.question.answer}
+              checked={item === state.answer}
             />
           ))}
         </div>
@@ -47,34 +85,43 @@ const ObjectiveQuestion = (props: Props) => {
           <Button onClick={deleteQuestion}>Delete</Button>
         </div>
       </div>
-      <Modal
-        isOpen={isEditDialogOpen}
-        onClose={() => setIsEditDialogOpen(!isEditDialogOpen)}
-      >
+      <Modal isOpen={isEditDialogOpen} onClose={handleClose}>
         <ModalHeader
           heading={`Question ${props.index + 1}`}
-          onClose={() => setIsEditDialogOpen(false)}
+          onClose={handleClose}
         />
         <ModalBody>
           <div className="objective-question-edit">
-            <Textarea value={props.question.question} rows="10" />
+            <Textarea
+              name="question"
+              value={state?.question}
+              rows="10"
+              onInput={handleQuestionChange}
+            />
             <div className="objective-question__choices">
-              {props.question.choices.map((item: string) => (
-                <div className="objective-question__choices__choice" key={item}>
-                  <Radio
-                    disabled
-                    name={item}
-                    checked={item === props.question.answer}
+              {state?.choices.map((item, index: number) => (
+                <div
+                  className="objective-question__choices__choice"
+                  key={index}
+                >
+                  <Radio disabled name={item} checked={item === state.answer} />
+                  <Input
+                    value={item}
+                    name="choice"
+                    onInput={(event: any) =>
+                      handleChoiceTextChange(event, index)
+                    }
                   />
-                  <Input value={item} />
                 </div>
               ))}
             </div>
           </div>
         </ModalBody>
         <ModalFooter>
-          <Button theme={ThemeType.primary}>Save</Button>
-          <Button onClick={() => setIsEditDialogOpen(false)}>Close</Button>
+          <Button theme={ThemeType.primary} onClick={handleSave}>
+            Save
+          </Button>
+          <Button onClick={handleClose}>Close</Button>
         </ModalFooter>
       </Modal>
     </>

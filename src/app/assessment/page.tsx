@@ -19,15 +19,17 @@ import { Assessment } from "@/types/Assessment";
 import {
   deleteAssessmentById,
   getAssessmentById,
+  getAssessmentQuestions,
   saveAssessmentById,
+  saveAssessmentQuestions,
 } from "./service";
-import withAuthValidation from "@/components/Authorization/withAuthValidation";
 import {
   PermissionType,
   useRouteAuthorization,
 } from "@/lib/RouteAuthorizationHook";
 import { Authorization } from "@/types/Authorization";
 import { AuthorizationState } from "@/store/AuthorizationStore";
+import { AssessmentQuestion } from "@/types/AssessmentQuestion";
 
 const sampleData = require("./data.json");
 
@@ -41,7 +43,10 @@ const AssessmentPage = () => {
   const [assessmentData, setAssessmentData] = useState<Assessment>({
     name: "",
   });
-  const [state, setState] = useState<any>({ ...sampleData });
+
+  const [assessmentQuestionsData, setAssessmentQuestionsData] = useState<
+    AssessmentQuestion[]
+  >([]);
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -58,16 +63,28 @@ const AssessmentPage = () => {
     });
   };
 
-  const handleQuestionChange = (data: any) => {
-    console.log(data);
+  const handleQuestionChange = (event: AssessmentQuestion, index: number) => {
+    const _assessmentQuestionsData = [...assessmentQuestionsData];
+    _assessmentQuestionsData[index] = event;
+    setAssessmentQuestionsData(_assessmentQuestionsData);
   };
 
-  const saveAssessment = () => {
+  const handleSaveAssessment = () => {
     saveAssessmentById(assessmentData?.id || "", assessmentData).then(
       (response) => {
         fetchAssessmentById();
+        fetchAssessmentQuestions();
       }
     );
+  };
+
+  const handleSaveAssessmentQuestions = () => {
+    saveAssessmentQuestions(
+      assessmentData?.id || "",
+      assessmentQuestionsData
+    ).then((response) => {
+      fetchAssessmentQuestions();
+    });
   };
 
   const handleDeleteAssessment = () => {
@@ -85,15 +102,27 @@ const AssessmentPage = () => {
   useEffect(() => {
     if (searchParams.has("id")) {
       fetchAssessmentById();
+      fetchAssessmentQuestions();
     }
   }, [authorization, searchParams]);
 
   const fetchAssessmentById = () => {
-    console.log(authorization);
     if (authorization.isAuth) {
-      getAssessmentById(authorization, searchParams.get("id") || "").then((response) => {
-        setAssessmentData(response);
-      });
+      getAssessmentById(authorization, searchParams.get("id") || "").then(
+        (response) => {
+          setAssessmentData(response);
+        }
+      );
+    }
+  };
+
+  const fetchAssessmentQuestions = () => {
+    if (authorization.isAuth) {
+      getAssessmentQuestions(authorization, searchParams.get("id") || "").then(
+        (response) => {
+          setAssessmentQuestionsData(response);
+        }
+      );
     }
   };
 
@@ -104,13 +133,11 @@ const AssessmentPage = () => {
   return (
     <div>
       <ContextBar title={assessmentData.name}>
-        <Button onClick={saveAssessment} theme={ThemeType.primary}>
-          Save
-        </Button>
+        <Button onClick={handleSaveAssessment}>Save Details</Button>
+        <Button onClick={handleSaveAssessmentQuestions}>Save Questions</Button>
         <Button onClick={handleDeleteAssessment} theme={ThemeType.danger}>
           Delete
         </Button>
-        <Button onClick={saveAssessment}>Close</Button>
       </ContextBar>
       <div className="page">
         <Tabs activeTabId={tab} onChange={handleTabChange}>
@@ -137,10 +164,12 @@ const AssessmentPage = () => {
             <TabHeader>Questions</TabHeader>
             <TabDetail>
               <div className="assessment-questions">
-                {state.questions.map((item: any, index: number) => (
+                {assessmentQuestionsData.map((item, index: number) => (
                   <ObjectiveQuestion
-                    onChange={handleQuestionChange}
-                    key={item.question}
+                    onChange={(event: AssessmentQuestion) =>
+                      handleQuestionChange(event, index)
+                    }
+                    key={index}
                     question={item}
                     index={index}
                   />
