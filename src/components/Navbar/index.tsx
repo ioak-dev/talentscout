@@ -23,10 +23,10 @@ const Navbar = () => {
     <nav className="navbar">
       <ul>
         <li>
-          <Link href="/assessments">Candidate Assessment</Link>
+          <Link href="/assessment/list">Candidate Assessment</Link>
         </li>
         <li>
-          <Link href="/resumes">Resume screener</Link>
+          <Link href="/resume/list">Resume screener</Link>
         </li>
       </ul>
       <div>

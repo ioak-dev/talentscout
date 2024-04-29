@@ -69,8 +69,14 @@ const AssessmentPage = () => {
     setAssessmentQuestionsData(_assessmentQuestionsData);
   };
 
+  const handleQuestionDelete = (index: number) => {
+    const _assessmentQuestionsData = [...assessmentQuestionsData];
+    _assessmentQuestionsData.splice(index, 1);
+    setAssessmentQuestionsData(_assessmentQuestionsData);
+  };
+
   const handleSaveAssessment = () => {
-    saveAssessmentById(assessmentData?.id || "", assessmentData).then(
+    saveAssessmentById(assessmentData?.id || "", assessmentData, authorization).then(
       (response) => {
         fetchAssessmentById();
         fetchAssessmentQuestions();
@@ -133,51 +139,26 @@ const AssessmentPage = () => {
   return (
     <div>
       <ContextBar title={assessmentData.name}>
-        <Button onClick={handleSaveAssessment}>Save Details</Button>
-        <Button onClick={handleSaveAssessmentQuestions}>Save Questions</Button>
-        <Button onClick={handleDeleteAssessment} theme={ThemeType.danger}>
-          Delete
+        <Button onClick={handleSaveAssessment} theme={ThemeType.primary}>
+          Save
         </Button>
+        <Button onClick={() => router.back()}>Cancel</Button>
       </ContextBar>
       <div className="page">
-        <Tabs activeTabId={tab} onChange={handleTabChange}>
-          <Tab id="1">
-            <TabHeader>Details</TabHeader>
-            <TabDetail>
-              <form className="assessment-detail-form">
-                <Input
-                  label="Assessment name"
-                  name="name"
-                  value={assessmentData?.name}
-                  onInput={handleAssessmentDataChange}
-                />
-                <Textarea
-                  label="Job description"
-                  name="jobDescription"
-                  value={assessmentData?.jobDescription}
-                  onInput={handleAssessmentDataChange}
-                />
-              </form>
-            </TabDetail>
-          </Tab>
-          <Tab id="2">
-            <TabHeader>Questions</TabHeader>
-            <TabDetail>
-              <div className="assessment-questions">
-                {assessmentQuestionsData.map((item, index: number) => (
-                  <ObjectiveQuestion
-                    onChange={(event: AssessmentQuestion) =>
-                      handleQuestionChange(event, index)
-                    }
-                    key={index}
-                    question={item}
-                    index={index}
-                  />
-                ))}
-              </div>
-            </TabDetail>
-          </Tab>
-        </Tabs>
+        <form className="assessment-detail-form">
+          <Input
+            label="Assessment name"
+            name="name"
+            value={assessmentData?.name}
+            onInput={handleAssessmentDataChange}
+          />
+          <Textarea
+            label="Job description"
+            name="jobDescription"
+            value={assessmentData?.jobDescription}
+            onInput={handleAssessmentDataChange}
+          />
+        </form>
       </div>
     </div>
   );

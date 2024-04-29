@@ -3,6 +3,7 @@
 import ContextBar from "@/components/ContextBar";
 import {
   Button,
+  IconButton,
   Input,
   Modal,
   ModalBody,
@@ -27,7 +28,7 @@ const AssessmentsPage = () => {
     hasPermissions([PermissionType.USER]);
   }, []);
   const [authorization, setAuthorization] = useState<Authorization>({});
-  
+
   const router = useRouter();
   const [data, setData] = useState<Assessment[]>();
   const [isNewAssessmentDialogOpen, setIsNewAssessmentDialogOpen] =
@@ -60,13 +61,17 @@ const AssessmentsPage = () => {
     });
   };
 
-  const manageAssessment = (id: string) => {
-    router.push(`/assessment?id=${id}`);
+  const handleEditAssessmentDetail = (id: string) => {
+    router.push(`/assessment/edit/details?id=${id}`);
+  };
+
+  const handleManageAssessmentQuestions = (id: string) => {
+    router.push(`/assessment/edit/questions?id=${id}`);
   };
 
   const handleKeydown = (event: any, id: string) => {
     if (event.key === "Enter" || event.key === " ") {
-      manageAssessment(id);
+      handleEditAssessmentDetail(id);
     }
   };
 
@@ -95,13 +100,14 @@ const AssessmentsPage = () => {
           </Button>
         </ContextBar>
         <div className="page">
-          <table className="basicui-table theme-default table-hover">
+          <table className="basicui-table theme-default">
             <thead>
               <tr>
                 <th>Assessment name</th>
                 <th>Created on</th>
                 <th>Status</th>
                 <th>Responses</th>
+                <th />
               </tr>
             </thead>
             <tbody>
@@ -109,13 +115,17 @@ const AssessmentsPage = () => {
                 <tr
                   key={index}
                   tabIndex={0}
-                  onClick={() => manageAssessment(item.id || "")}
-                  onKeyDown={(event) => handleKeydown(event, item.id || "")}
+                  // onClick={() => handleEditAssessmentDetail(item.id || "")}
+                  // onKeyDown={(event) => handleKeydown(event, item.id || "")}
                 >
                   <td>{item.name}</td>
                   <td>{item.createdDate}</td>
                   <td>{item.status}</td>
                   <td>{5}</td>
+                  <td>
+                    <IconButton circle onClick={() => handleEditAssessmentDetail(item.id || "")}>E</IconButton>
+                    <IconButton circle onClick={() => handleManageAssessmentQuestions(item.id || "")}>Q</IconButton>
+                  </td>
                 </tr>
               ))}
             </tbody>

@@ -17,6 +17,7 @@ interface Props {
   question: { question: string; answer: string; choices: string[] };
   index: number;
   onChange: any;
+  onDelete: any;
 }
 
 const ObjectiveQuestion = (props: Props) => {
@@ -34,7 +35,9 @@ const ObjectiveQuestion = (props: Props) => {
 
   const editQuestion = () => {};
 
-  const deleteQuestion = () => {};
+  const deleteQuestion = () => {
+    props.onDelete();
+  };
 
   useEffect(() => {
     setState(cloneDeep(props.question));
@@ -51,6 +54,14 @@ const ObjectiveQuestion = (props: Props) => {
     const choices = [...state.choices];
     choices[index] = event.currentTarget.value;
     setState({ ...state, choices });
+  };
+
+  const handleChoiceChange = (answer: string, index: number) => {
+    console.log(answer)
+    setState({
+      ...state,
+      answer,
+    });
   };
 
   const handleSave = () => {
@@ -76,7 +87,8 @@ const ObjectiveQuestion = (props: Props) => {
               key={item}
               label={item}
               name={item}
-              checked={item === state.answer}
+              value={item}
+              checked={item === props.question.answer}
             />
           ))}
         </div>
@@ -104,7 +116,11 @@ const ObjectiveQuestion = (props: Props) => {
                   className="objective-question__choices__choice"
                   key={index}
                 >
-                  <Radio disabled name={item} checked={item === state.answer} />
+                  <Radio
+                    checked={item === state.answer}
+                    value={item}
+                    onChange={() => handleChoiceChange(item, index)}
+                  />
                   <Input
                     value={item}
                     name="choice"
