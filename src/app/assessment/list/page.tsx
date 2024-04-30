@@ -21,6 +21,7 @@ import {
   PermissionType,
   useRouteAuthorization,
 } from "@/lib/RouteAuthorizationHook";
+import ListItem from "./ListItem";
 
 const AssessmentsPage = () => {
   const { hasPermissions, isRouteAuthorized } = useRouteAuthorization("1");
@@ -55,7 +56,7 @@ const AssessmentsPage = () => {
   };
 
   const handleSaveNewAssignment = () => {
-    saveAssessment(newAssignmentForm).then((response: any) => {
+    saveAssessment(newAssignmentForm, authorization).then((response: any) => {
       setIsNewAssessmentDialogOpen(false);
       fetchAssessments();
     });
@@ -100,36 +101,11 @@ const AssessmentsPage = () => {
           </Button>
         </ContextBar>
         <div className="page">
-          <table className="basicui-table theme-default">
-            <thead>
-              <tr>
-                <th>Assessment name</th>
-                <th>Created on</th>
-                <th>Status</th>
-                <th>Responses</th>
-                <th />
-              </tr>
-            </thead>
-            <tbody>
-              {data?.map((item, index) => (
-                <tr
-                  key={index}
-                  tabIndex={0}
-                  // onClick={() => handleEditAssessmentDetail(item.id || "")}
-                  // onKeyDown={(event) => handleKeydown(event, item.id || "")}
-                >
-                  <td>{item.name}</td>
-                  <td>{item.createdDate}</td>
-                  <td>{item.status}</td>
-                  <td>{5}</td>
-                  <td>
-                    <IconButton circle onClick={() => handleEditAssessmentDetail(item.id || "")}>E</IconButton>
-                    <IconButton circle onClick={() => handleManageAssessmentQuestions(item.id || "")}>Q</IconButton>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <div className="card-list">
+            {data?.map((item, index) => (
+              <ListItem key={index} data={item} />
+            ))}
+          </div>
         </div>
       </div>
       <Modal
