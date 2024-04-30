@@ -8,6 +8,10 @@ import Navbar from "@/components/Navbar";
 import { useEffect, useState } from "react";
 import { DarkModeState } from "@/store/ProfileStore";
 import { useInitialization } from "@/lib/InitializationHook";
+// https://docs.fontawesome.com/web/use-with/react/
+import "@fortawesome/fontawesome-svg-core/styles.css";
+import { config } from "@fortawesome/fontawesome-svg-core";
+config.autoAddCss = false;
 
 const inter = Inter({ subsets: ["latin"] });
 

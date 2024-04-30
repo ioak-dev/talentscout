@@ -21,6 +21,9 @@ import {
   PermissionType,
   useRouteAuthorization,
 } from "@/lib/RouteAuthorizationHook";
+// https://docs.fontawesome.com/web/use-with/react/
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPen, faTrash, faEye } from "@fortawesome/free-solid-svg-icons";
 
 const AssessmentsPage = () => {
   const { hasPermissions, isRouteAuthorized } = useRouteAuthorization("1");
@@ -100,6 +103,10 @@ const AssessmentsPage = () => {
           </Button>
         </ContextBar>
         <div className="page">
+          <IconButton className="icon_button" circle={true}>
+            <FontAwesomeIcon icon={faPen} />
+          </IconButton>
+          <br /><br />
           <table className="basicui-table theme-default">
             <thead>
               <tr>
@@ -123,8 +130,20 @@ const AssessmentsPage = () => {
                   <td>{item.status}</td>
                   <td>{5}</td>
                   <td>
-                    <IconButton circle onClick={() => handleEditAssessmentDetail(item.id || "")}>E</IconButton>
-                    <IconButton circle onClick={() => handleManageAssessmentQuestions(item.id || "")}>Q</IconButton>
+                    <IconButton
+                      circle
+                      onClick={() => handleEditAssessmentDetail(item.id || "")}
+                    >
+                      E
+                    </IconButton>
+                    <IconButton
+                      circle
+                      onClick={() =>
+                        handleManageAssessmentQuestions(item.id || "")
+                      }
+                    >
+                      Q
+                    </IconButton>
                   </td>
                 </tr>
               ))}
