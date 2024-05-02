@@ -1,5 +1,7 @@
 import {
   Button,
+  ButtonVariantType,
+  IconButton,
   Input,
   Modal,
   ModalBody,
@@ -12,6 +14,15 @@ import {
 import cloneDeep from "lodash/cloneDeep";
 import "./style.css";
 import { useEffect, useState } from "react";
+import {
+  faCheck,
+  faClose,
+  faPen,
+  faPenAlt,
+  faPenClip,
+  faTrash,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 interface Props {
   question: { question: string; answer: string; choices: string[] };
@@ -57,7 +68,7 @@ const ObjectiveQuestion = (props: Props) => {
   };
 
   const handleChoiceChange = (answer: string, index: number) => {
-    console.log(answer)
+    console.log(answer);
     setState({
       ...state,
       answer,
@@ -93,8 +104,20 @@ const ObjectiveQuestion = (props: Props) => {
           ))}
         </div>
         <div className="objective-question__action">
-          <Button onClick={() => setIsEditDialogOpen(true)}>Edit</Button>
-          <Button onClick={deleteQuestion}>Delete</Button>
+          <IconButton
+            onClick={() => setIsEditDialogOpen(true)}
+            circle
+            variant={ButtonVariantType.outline}
+          >
+            <FontAwesomeIcon icon={faPenAlt} />
+          </IconButton>
+          <IconButton
+            onClick={deleteQuestion}
+            circle
+            variant={ButtonVariantType.outline}
+          >
+            <FontAwesomeIcon icon={faTrash} />
+          </IconButton>
         </div>
       </div>
       <Modal isOpen={isEditDialogOpen} onClose={handleClose}>
@@ -135,9 +158,12 @@ const ObjectiveQuestion = (props: Props) => {
         </ModalBody>
         <ModalFooter>
           <Button theme={ThemeType.primary} onClick={handleSave}>
+            <FontAwesomeIcon icon={faCheck} />
             Save
           </Button>
-          <Button onClick={handleClose}>Close</Button>
+          <IconButton onClick={handleClose}>
+            <FontAwesomeIcon icon={faClose} />
+          </IconButton>
         </ModalFooter>
       </Modal>
     </>

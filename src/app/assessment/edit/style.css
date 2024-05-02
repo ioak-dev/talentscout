@@ -1,0 +1,26 @@
+.assessment-questions {
+    display: grid;
+    grid-auto-flow: row;
+    row-gap: 20px;
+    padding: 24px 0;
+}
+
+.assessment-detail-form {
+    display: grid;
+    grid-auto-flow: row;
+    row-gap: 12px;
+}
+
+.assessment-detail-form textarea {
+    height: 240px;
+}
+
+.assessment-questions-newdialog {
+    
+}
+
+.assessment-questions-newdialog__type {
+    display: grid;
+    grid-auto-flow: column;
+    column-gap: 12px;
+}

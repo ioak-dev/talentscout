@@ -13,6 +13,17 @@ import {
 } from "basicui";
 import { redirect, useRouter } from "next/navigation";
 import { useEffect, useLayoutEffect, useState } from "react";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faPen,
+  faTrash,
+  faEye,
+  faClose,
+  faPlus,
+  faCheck,
+} from "@fortawesome/free-solid-svg-icons";
+
 import { getAssessments, saveAssessment } from "./service";
 import { Assessment } from "@/types/Assessment";
 import { Authorization } from "@/types/Authorization";
@@ -63,11 +74,7 @@ const AssessmentsPage = () => {
   };
 
   const handleEditAssessmentDetail = (id: string) => {
-    router.push(`/assessment/edit/details?id=${id}`);
-  };
-
-  const handleManageAssessmentQuestions = (id: string) => {
-    router.push(`/assessment/edit/questions?id=${id}`);
+    router.push(`/assessment/edit?id=${id}`);
   };
 
   const handleKeydown = (event: any, id: string) => {
@@ -97,10 +104,13 @@ const AssessmentsPage = () => {
       <div>
         <ContextBar title="Assessments list">
           <Button onClick={() => setIsNewAssessmentDialogOpen(true)}>
-            New assessment
+            <FontAwesomeIcon icon={faPlus} /> Assessment
           </Button>
         </ContextBar>
         <div className="page">
+          <div className="large-search-bar">
+            <Input placeholder="Type to search" />
+          </div>
           <div className="card-list">
             {data?.map((item, index) => (
               <ListItem key={index} data={item} />
@@ -114,7 +124,7 @@ const AssessmentsPage = () => {
       >
         <ModalHeader
           onClose={() => setIsNewAssessmentDialogOpen(false)}
-          heading="Create new assessment"
+          heading="New assessment"
         />
 
         <ModalBody>
@@ -130,11 +140,12 @@ const AssessmentsPage = () => {
         </ModalBody>
         <ModalFooter>
           <Button theme={ThemeType.primary} onClick={handleSaveNewAssignment}>
+            <FontAwesomeIcon icon={faCheck} />
             Save
           </Button>
-          <Button onClick={() => setIsNewAssessmentDialogOpen(false)}>
-            Close
-          </Button>
+          <IconButton onClick={() => setIsNewAssessmentDialogOpen(false)}>
+            <FontAwesomeIcon icon={faClose} />
+          </IconButton>
         </ModalFooter>
       </Modal>
     </>

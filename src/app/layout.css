@@ -12,3 +12,46 @@ main {
   width: 90%;
 }
 
+.card-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 250px);
+  row-gap: 24px;
+  column-gap: 24px;
+}
+
+.list-item {
+  background-color: var(--theme-white-100);
+  padding: 12px 12px;
+  border-radius: 4px;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  row-gap: 6px;
+  /* justify-content: flex-start; */
+}
+
+.basicui-dark .list-item {
+  background-color: var(--theme-black-50);
+}
+
+.list-item-actions {
+  display: grid;
+  grid-auto-flow: column;
+  column-gap: 6px;
+  justify-content: flex-end;
+}
+
+.list-item-main {
+  display: grid;
+  grid-auto-flow: row;
+  row-gap: 6px;
+  justify-content: flex-start;
+  justify-items: flex-start;
+  align-content: flex-start;
+}
+
+.list-item-subtitle {
+  font-size: 12px;
+  margin-bottom: -6px;
+  opacity: 0.5;
+  text-transform: uppercase;
+}
