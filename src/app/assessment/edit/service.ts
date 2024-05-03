@@ -117,6 +117,27 @@ export const saveAssessmentQuestionById = (
     });
 };
 
+export const createNewQuestion = (
+  id: string,
+  payload: AssessmentQuestion,
+  authorization?: any
+) => {
+  return httpPost(`/assessment/${id}/question`, payload, {
+    headers: {
+      Authorization: authorization?.access_token,
+    },
+  })
+    .then((response) => {
+      if (response.status === 200) {
+        return Promise.resolve(response.data);
+      }
+      return Promise.resolve([]);
+    })
+    .catch((error) => {
+      return Promise.resolve([]);
+    });
+};
+
 export const deleteAssessmentQuestionById = (
   id: string,
   payload: AssessmentQuestion,
@@ -138,12 +159,40 @@ export const deleteAssessmentQuestionById = (
     });
 };
 
-export const generateNewAssessmentQuestion = (id: string, authorization: any) => {
+export const generateNewAssessmentQuestion = (
+  id: string,
+  authorization: any
+) => {
   return httpGet(`/assessment/${id}/new-question`, {
     headers: {
       Authorization: authorization?.access_token,
     },
   })
+    .then((response) => {
+      if (response.status === 200) {
+        return Promise.resolve(response.data);
+      }
+      return Promise.resolve([]);
+    })
+    .catch((error) => {
+      return Promise.resolve([]);
+    });
+};
+
+export const changeAssessmentStatus = (
+  id: string,
+  status: "Draft" | "Active" | "Paused" | "Closed",
+  authorization?: any
+) => {
+  return httpPost(
+    `/assessment/${id}/status/${status}`,
+    {},
+    {
+      headers: {
+        Authorization: authorization?.access_token,
+      },
+    }
+  )
     .then((response) => {
       if (response.status === 200) {
         return Promise.resolve(response.data);

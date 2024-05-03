@@ -24,6 +24,8 @@ import { useEffect, useLayoutEffect, useState } from "react";
 import "./style.css";
 import { Assessment } from "@/types/Assessment";
 import {
+  changeAssessmentStatus,
+  createNewQuestion,
   deleteAssessmentById,
   deleteAssessmentQuestionById,
   generateNewAssessmentQuestion,
@@ -45,8 +47,11 @@ import {
   faCheck,
   faClose,
   faKeyboard,
+  faPause,
   faPen,
+  faPlay,
   faPlus,
+  faStop,
   faWandMagic,
   faWandMagicSparkles,
   faWandSparkles,
@@ -59,7 +64,7 @@ const BLANK_ASSESSMENT_QUESTION: AssessmentQuestion = {
   question: "",
   answer: " ",
   assessmentId: "",
-  type: "multiple-choice",
+  type: "MultipleChoice",
   choices: ["", "", "", ""],
 };
 
@@ -121,7 +126,6 @@ const AssessmentPage = () => {
     });
   };
 
-
   const handleSaveAssessment = (data: Assessment) => {
     saveAssessmentById(assessmentData?.id || "", data, authorization).then(
       (response) => {
@@ -131,7 +135,7 @@ const AssessmentPage = () => {
       }
     );
   };
-  
+
   const handleDeleteAssessment = () => {
     deleteAssessmentById(assessmentData?.id || "").then((response) => {
       router.back();
@@ -231,7 +235,19 @@ const AssessmentPage = () => {
   const handleSaveNewQuestion = () => {
     if (addNewDialogState.assessmentQuestion.id) {
       saveAssessmentQuestionById(
-        addNewDialogState.assessmentQuestion.id,
+        assessmentData.id || "",
+        addNewDialogState.assessmentQuestion,
+        authorization
+      ).then((response) => {
+        fetchAssessmentQuestions();
+        setAddNewDialogState({
+          isOpen: false,
+          assessmentQuestion: BLANK_ASSESSMENT_QUESTION,
+        });
+      });
+    } else {
+      createNewQuestion(
+        assessmentData.id || "",
         addNewDialogState.assessmentQuestion,
         authorization
       ).then((response) => {
@@ -244,6 +260,16 @@ const AssessmentPage = () => {
     }
   };
 
+  const handleStatusChange = (
+    status: "Draft" | "Active" | "Paused" | "Closed"
+  ) => {
+    changeAssessmentStatus(assessmentData.id || "", status, authorization).then(
+      (response) => {
+        fetchAssessmentById();
+      }
+    );
+  };
+
   if (!isRouteAuthorized) {
     return <></>;
   }
@@ -252,14 +278,54 @@ const AssessmentPage = () => {
     <>
       <div>
         <ContextBar title={assessmentData.name}>
-          <Button onClick={handleAddNewQuestion}>
-            <FontAwesomeIcon icon={faPlus} />
-            Question
-          </Button>
-          <Button onClick={() => setIsEditAssessmentDialogOpen(true)}>
-            <FontAwesomeIcon icon={faPen} />
-            Job description
-          </Button>
+          {["Draft", "Paused"].includes(assessmentData.status || "") && (
+            <Button onClick={handleAddNewQuestion}>
+              <FontAwesomeIcon icon={faPlus} />
+              Question
+            </Button>
+          )}
+          {["Draft", "Paused"].includes(assessmentData.status || "") && (
+            <Button onClick={() => setIsEditAssessmentDialogOpen(true)}>
+              <FontAwesomeIcon icon={faPen} />
+              Job description
+            </Button>
+          )}
+          {["Draft", "Paused"].includes(assessmentData.status || "") && (
+            <Button
+              onClick={() => handleStatusChange("Active")}
+              theme={ThemeType.primary}
+            >
+              <FontAwesomeIcon icon={faPlay} />
+              Launch
+            </Button>
+          )}
+          {assessmentData.status === "Closed" && (
+            <Button
+              onClick={() => handleStatusChange("Paused")}
+              theme={ThemeType.primary}
+            >
+              <FontAwesomeIcon icon={faPlay} />
+              Reopen
+            </Button>
+          )}
+          {assessmentData.status === "Active" && (
+            <Button
+              onClick={() => handleStatusChange("Paused")}
+              theme={ThemeType.warning}
+            >
+              <FontAwesomeIcon icon={faPause} />
+              Pause
+            </Button>
+          )}
+          {assessmentData.status === "Active" && (
+            <Button
+              onClick={() => handleStatusChange("Closed")}
+              theme={ThemeType.danger}
+            >
+              <FontAwesomeIcon icon={faStop} />
+              Close
+            </Button>
+          )}
           {/* <Button onClick={() => router.back()}>Back</Button> */}
         </ContextBar>
         <div className="page">
