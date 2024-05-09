@@ -43,6 +43,8 @@ const AssessmentsPage = () => {
 
   const router = useRouter();
   const [data, setData] = useState<Assessment[]>();
+  const [view, setView] = useState<Assessment[]>();
+  const [searchText, setSearchText] = useState("");
   const [isNewAssessmentDialogOpen, setIsNewAssessmentDialogOpen] =
     useState(false);
   const [newAssignmentForm, setNewAssignmentForm] = useState<Assessment>({
@@ -58,6 +60,24 @@ const AssessmentsPage = () => {
   useEffect(() => {
     setNewAssignmentForm({ name: "" });
   }, [isNewAssessmentDialogOpen]);
+
+  useEffect(() => {
+    if (searchText && searchText !== "") {
+      setView(
+        data?.filter(
+          (item) =>
+            item.name.toLowerCase().includes(searchText) ||
+            item.jobDescription?.toLowerCase().includes(searchText)
+        )
+      );
+    } else {
+      setView(data);
+    }
+  }, [searchText, data]);
+
+  const handleSearchTextChange = (event: any) => {
+    setSearchText(event.currentTarget.value?.toLowerCase());
+  };
 
   const handleChange = (event: any) => {
     setNewAssignmentForm({
@@ -109,10 +129,15 @@ const AssessmentsPage = () => {
         </ContextBar>
         <div className="page">
           <div className="large-search-bar">
-            <Input placeholder="Type to search" />
+            <Input
+              placeholder="Type to search"
+              value={searchText}
+              name="searchText"
+              onInput={handleSearchTextChange}
+            />
           </div>
           <div className="card-list">
-            {data?.map((item, index) => (
+            {view?.map((item, index) => (
               <ListItem key={index} data={item} />
             ))}
           </div>

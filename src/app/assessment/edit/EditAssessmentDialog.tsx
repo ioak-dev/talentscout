@@ -91,6 +91,7 @@ const EditAssessmentDialog = (props: Props) => {
           <Textarea
             label="Job description"
             name="jobDescription"
+            autoFocus
             value={assessmentData?.jobDescription}
             onInput={handleAssessmentDataChange}
           />

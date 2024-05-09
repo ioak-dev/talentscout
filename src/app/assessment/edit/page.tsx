@@ -413,6 +413,7 @@ const AssessmentPage = () => {
                     rows="10"
                     onInput={handleQuestionChange}
                     placeholder="Question"
+                    autoFocus
                   />
                   <div className="objective-question__choices">
                     {addNewDialogState.assessmentQuestion?.choices.map(

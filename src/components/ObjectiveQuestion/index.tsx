@@ -131,6 +131,7 @@ const ObjectiveQuestion = (props: Props) => {
               name="question"
               value={state?.question}
               rows="10"
+              autoFocus
               onInput={handleQuestionChange}
             />
             <div className="objective-question__choices">
