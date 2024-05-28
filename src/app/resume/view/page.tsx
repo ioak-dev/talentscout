@@ -23,6 +23,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useLayoutEffect, useState } from "react";
 import { getResumeById } from "./service";
 import "./style.css";
+import DataObjectViewer from "./DataObjectViewer";
 
 export default function ViewResume() {
   const { hasPermissions, isRouteAuthorized } = useRouteAuthorization("1");
@@ -91,9 +92,34 @@ export default function ViewResume() {
                 Questions to be asked
               </div>
               <div className="view-resume__questions view-resume__element__value">
-                {resumeData.questionsToBeAsked?.map((item) => (
-                  <div className="view-resume__questions__item">{item}</div>
-                ))}
+                <div className="data-subheading">Technical</div>
+                {resumeData.questionsToBeAsked &&
+                  resumeData.questionsToBeAsked?.technical &&
+                  resumeData.questionsToBeAsked.technical.map(
+                    (item: string) => (
+                      <div className="view-resume__questions__item">{item}</div>
+                    )
+                  )}
+                <div className="data-subheading">Overall</div>
+                {resumeData.questionsToBeAsked &&
+                  resumeData.questionsToBeAsked?.overall &&
+                  resumeData.questionsToBeAsked.overall.map((item: string) => (
+                    <div className="view-resume__questions__item">{item}</div>
+                  ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="view-resume__element__group">
+            <div className="view-resume__element">
+              <div className="view-resume__element__label">
+                <div className="view-resume__element__label__icon">
+                  <FontAwesomeIcon icon={faTools} />
+                </div>
+                Key project
+              </div>
+              <div className="view-resume__element__value">
+                {resumeData.keyProject || "-"}
               </div>
             </div>
           </div>
@@ -107,7 +133,7 @@ export default function ViewResume() {
                 Technical Skills
               </div>
               <div className="view-resume__element__value">
-                {resumeData.technicalSkills?.toString() || "-"}
+                <DataObjectViewer data={resumeData.technicalSkills} />
               </div>
             </div>
             <div className="view-resume__element">
@@ -118,7 +144,7 @@ export default function ViewResume() {
                 Domain Skills
               </div>
               <div className="view-resume__element__value">
-                {resumeData.domainSkils?.toString() || "-"}
+                <DataObjectViewer data={resumeData.domainSkills} />
               </div>
             </div>
           </div>
@@ -151,20 +177,6 @@ export default function ViewResume() {
                   Longest experience with any organization:{" "}
                   {resumeData.longestExperience || "-"}
                 </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="view-resume__element__group">
-            <div className="view-resume__element">
-              <div className="view-resume__element__label">
-                <div className="view-resume__element__label__icon">
-                  <FontAwesomeIcon icon={faTools} />
-                </div>
-                Key projects
-              </div>
-              <div className="view-resume__element__value">
-                {resumeData.keyProjects?.toString() || "-"}
               </div>
             </div>
           </div>

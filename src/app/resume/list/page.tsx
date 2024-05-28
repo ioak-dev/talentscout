@@ -57,7 +57,8 @@ export default function Resumes() {
   const handleSaveNewAssignment = () => {
     saveResume(newFileAttachment, authorization).then((response: any) => {
       setIsNewResumeDialogOpen(false);
-      fetchResumes();
+      // fetchResumes();
+      router.push(`/resume/view?id=${response.id}`);
     });
   };
 

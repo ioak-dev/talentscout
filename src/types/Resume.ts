@@ -8,11 +8,11 @@ export type Resume = {
   avgExperiencePerCompany?: string;
   longestExperience?: string;
   recentExperience?: string;
-  technicalSkills?: string[];
-  domainSkils?: string[];
-  keyProjects?: string;
+  technicalSkills?: any;
+  domainSkills?: any;
+  keyProject?: string;
   id?: string;
-  questionsToBeAsked?: string[];
+  questionsToBeAsked?: any;
   lastModifiedBy?: string;
   lastModifiedDate?: string;
   createdBy?: string;

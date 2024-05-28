@@ -75,3 +75,9 @@
 }
 .view-resume__questions__item {
 }
+
+
+.data-subheading {
+  font-weight: bold;
+  text-transform: capitalize;
+}
