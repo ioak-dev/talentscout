@@ -8,7 +8,8 @@ export const getResumeById = (authorization: any, id: string) => {
   })
     .then((response) => {
       if (response.status === 200) {
-        return Promise.resolve(response.data);
+        console.log({...response.data, data: JSON.parse(response.data.data)})
+        return Promise.resolve({...response.data, data: JSON.parse(response.data.data)});
       }
       return Promise.resolve({});
     })

@@ -31,9 +31,7 @@ export default function ViewResume() {
     hasPermissions([PermissionType.USER]);
   }, []);
   const [authorization, setAuthorization] = useState<Authorization>({});
-  const [resumeData, setResumeData] = useState<Resume>({
-    name: "",
-  });
+  const [resumeData, setResumeData] = useState<Resume>({});
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -71,116 +69,126 @@ export default function ViewResume() {
         </Button>
       </ContextBar>
       <div className="page">
-        <div className="view-resume">
-          <div className="view-resume__element view-resume__heading">
-            <h1 className="view-resume__heading__name">{resumeData.name}</h1>
-            <div className="view-resume__heading__designation">
-              {resumeData.standardizedDesignation} |{" "}
-              {resumeData.totalExperience}
-            </div>
-            <div className="view-resume__heading__overview">
-              {resumeData.overview || "-"}
-            </div>
-          </div>
-
-          <div className="view-resume__element__group view-resume__questions__group">
-            <div className="view-resume__element">
-              <div className="view-resume__element__label">
-                <div className="view-resume__element__label__icon">
-                  <FontAwesomeIcon icon={faMessage} />
-                </div>
-                Questions to be asked
+        {resumeData.data && (
+          <div className="view-resume">
+            <div className="view-resume__element view-resume__heading">
+              <h1 className="view-resume__heading__name">{resumeData.data?.name}</h1>
+              <div className="view-resume__heading__designation">
+                {resumeData.data.standardizedDesignation} |{" "}
+                {resumeData.data.totalExperience}
               </div>
-              <div className="view-resume__questions view-resume__element__value">
-                <div className="data-subheading">Technical</div>
-                {resumeData.questionsToBeAsked &&
-                  resumeData.questionsToBeAsked?.technical &&
-                  resumeData.questionsToBeAsked.technical.map(
-                    (item: string) => (
+              <div className="view-resume__heading__overview">
+                {resumeData.data.overview || "-"}
+              </div>
+            </div>
+
+            <div className="view-resume__element__group view-resume__questions__group">
+              <div className="view-resume__element">
+                <div className="view-resume__element__label">
+                  <div className="view-resume__element__label__icon">
+                    <FontAwesomeIcon icon={faMessage} />
+                  </div>
+                  Questions to be asked
+                </div>
+                <div className="view-resume__questions view-resume__element__value">
+                  <div className="data-subheading">Technical</div>
+                  {resumeData.data.keyQuestionsToBeAsked &&
+                    resumeData.data.keyQuestionsToBeAsked?.technical &&
+                    resumeData.data.keyQuestionsToBeAsked.technical.map(
+                      (item: string) => (
+                        <div className="view-resume__questions__item">
+                          {item}
+                        </div>
+                      )
+                    )}
+                  <div className="data-subheading">Overall</div>
+                  {resumeData.data.keyQuestionsToBeAsked &&
+                    (resumeData.data.keyQuestionsToBeAsked?.resume ||
+                      resumeData.data.keyQuestionsToBeAsked?.overallResume ||
+                      resumeData.data.keyQuestionsToBeAsked?.overall) &&
+                    (
+                      resumeData.data.keyQuestionsToBeAsked?.resume ||
+                      resumeData.data.keyQuestionsToBeAsked?.overallResume ||
+                      resumeData.data.keyQuestionsToBeAsked?.overall
+                    ).map((item: string) => (
                       <div className="view-resume__questions__item">{item}</div>
-                    )
-                  )}
-                <div className="data-subheading">Overall</div>
-                {resumeData.questionsToBeAsked &&
-                  resumeData.questionsToBeAsked?.overall &&
-                  resumeData.questionsToBeAsked.overall.map((item: string) => (
-                    <div className="view-resume__questions__item">{item}</div>
-                  ))}
+                    ))}
+                </div>
               </div>
             </div>
-          </div>
 
-          <div className="view-resume__element__group">
-            <div className="view-resume__element">
-              <div className="view-resume__element__label">
-                <div className="view-resume__element__label__icon">
-                  <FontAwesomeIcon icon={faTools} />
+            <div className="view-resume__element__group">
+              <div className="view-resume__element">
+                <div className="view-resume__element__label">
+                  <div className="view-resume__element__label__icon">
+                    <FontAwesomeIcon icon={faTools} />
+                  </div>
+                  Key project
                 </div>
-                Key project
-              </div>
-              <div className="view-resume__element__value">
-                {resumeData.keyProject || "-"}
+                <div className="view-resume__element__value">
+                  {resumeData.data.keyProject || "-"}
+                </div>
               </div>
             </div>
-          </div>
 
-          <div className="view-resume__element__group">
-            <div className="view-resume__element">
-              <div className="view-resume__element__label">
-                <div className="view-resume__element__label__icon">
-                  <FontAwesomeIcon icon={faTools} />
+            <div className="view-resume__element__group">
+              <div className="view-resume__element">
+                <div className="view-resume__element__label">
+                  <div className="view-resume__element__label__icon">
+                    <FontAwesomeIcon icon={faTools} />
+                  </div>
+                  Technical Skills
                 </div>
-                Technical Skills
+                <div className="view-resume__element__value">
+                  <DataObjectViewer data={resumeData.data.technicalSkills} />
+                </div>
               </div>
-              <div className="view-resume__element__value">
-                <DataObjectViewer data={resumeData.technicalSkills} />
+              <div className="view-resume__element">
+                <div className="view-resume__element__label">
+                  <div className="view-resume__element__label__icon">
+                    <FontAwesomeIcon icon={faBank} />
+                  </div>
+                  Domain Skills
+                </div>
+                <div className="view-resume__element__value">
+                  <DataObjectViewer data={resumeData.data.domainSkills} />
+                </div>
               </div>
             </div>
-            <div className="view-resume__element">
-              <div className="view-resume__element__label">
-                <div className="view-resume__element__label__icon">
-                  <FontAwesomeIcon icon={faBank} />
-                </div>
-                Domain Skills
-              </div>
-              <div className="view-resume__element__value">
-                <DataObjectViewer data={resumeData.domainSkills} />
-              </div>
-            </div>
-          </div>
 
-          <div className="view-resume__element__group">
-            <div className="view-resume__element">
-              <div className="view-resume__element__label">
-                <div className="view-resume__element__label__icon">
-                  <FontAwesomeIcon icon={faCalendar} />
+            <div className="view-resume__element__group">
+              <div className="view-resume__element">
+                <div className="view-resume__element__label">
+                  <div className="view-resume__element__label__icon">
+                    <FontAwesomeIcon icon={faCalendar} />
+                  </div>
+                  Experiece
                 </div>
-                Experiece
-              </div>
-              <div className="view-resume__element__value">
-                <div className="view-resume__element__value__entry">
-                  Total experience: {resumeData.totalExperience || "-"}
-                </div>
-                <div className="view-resume__element__value__entry">
-                  Industry Normalized total experience:{" "}
-                  {resumeData.industryNormalizedExperience || "-"}
-                </div>
-                <div className="view-resume__element__value__entry">
-                  Experience with recent organization:{" "}
-                  {resumeData.recentExperience || "-"}
-                </div>
-                <div className="view-resume__element__value__entry">
-                  Average experience in an organization:{" "}
-                  {resumeData.avgExperiencePerCompany || "-"}
-                </div>
-                <div className="view-resume__element__value__entry">
-                  Longest experience with any organization:{" "}
-                  {resumeData.longestExperience || "-"}
+                <div className="view-resume__element__value">
+                  <div className="view-resume__element__value__entry">
+                    Total experience: {resumeData.data.totalExperience || "-"}
+                  </div>
+                  <div className="view-resume__element__value__entry">
+                    Industry Normalized total experience:{" "}
+                    {resumeData.data.industryNormalizedExperience || "-"}
+                  </div>
+                  <div className="view-resume__element__value__entry">
+                    Experience with recent organization:{" "}
+                    {resumeData.data.recentExperience || "-"}
+                  </div>
+                  <div className="view-resume__element__value__entry">
+                    Average experience in an organization:{" "}
+                    {resumeData.data.avgExperiencePerCompany || "-"}
+                  </div>
+                  <div className="view-resume__element__value__entry">
+                    Longest experience with any organization:{" "}
+                    {resumeData.data.longestExperience || "-"}
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

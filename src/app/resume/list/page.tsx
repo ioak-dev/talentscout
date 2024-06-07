@@ -67,8 +67,8 @@ export default function Resumes() {
       setView(
         data?.filter(
           (item) =>
-            item.name.toLowerCase().includes(searchText) ||
-            item.overview?.toLowerCase().includes(searchText)
+            item.data?.name.toLowerCase().includes(searchText) ||
+            item.data?.overview?.toLowerCase().includes(searchText)
         )
       );
     } else {
