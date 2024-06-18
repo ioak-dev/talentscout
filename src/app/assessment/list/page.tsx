@@ -141,6 +141,11 @@ const AssessmentsPage = () => {
               <ListItem key={index} data={item} />
             ))}
           </div>
+          {(data?.length == 0) &&
+          <div className="no-data-container">
+            <h2>No Data Available </h2>
+            <p>Please add the assessment</p>
+          </div>}
         </div>
       </div>
       <Modal

@@ -18,3 +18,7 @@
 .assessment-list-item__responses {
   font-size: 12px;
 }
+
+.no-data-container{
+  text-align: center;
+}

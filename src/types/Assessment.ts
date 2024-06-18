@@ -8,4 +8,5 @@ export type Assessment = {
   lastModifiedDate?: string;
   createdBy?: string;
   createdDate?: string;
+  skillSet:any;
 };

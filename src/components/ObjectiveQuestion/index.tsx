@@ -33,7 +33,7 @@ interface Props {
 
 const ObjectiveQuestion = (props: Props) => {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-
+  const [isDeleteAssessmentDialogOpen, setIsDeleteAssessmentDialogOpen] = useState(false);
   const [state, setState] = useState<{
     question: string;
     answer: string;
@@ -48,6 +48,7 @@ const ObjectiveQuestion = (props: Props) => {
 
   const deleteQuestion = () => {
     props.onDelete();
+    setIsDeleteAssessmentDialogOpen(false);
   };
 
   useEffect(() => {
@@ -112,7 +113,7 @@ const ObjectiveQuestion = (props: Props) => {
             <FontAwesomeIcon icon={faPenAlt} />
           </IconButton>
           <IconButton
-            onClick={deleteQuestion}
+            onClick={() =>setIsDeleteAssessmentDialogOpen(true)}
             circle
             variant={ButtonVariantType.outline}
           >
@@ -165,6 +166,30 @@ const ObjectiveQuestion = (props: Props) => {
           <IconButton onClick={handleClose}>
             <FontAwesomeIcon icon={faClose} />
           </IconButton>
+        </ModalFooter>
+      </Modal>
+
+      <Modal
+        isOpen={isDeleteAssessmentDialogOpen}
+        onClose={() => setIsDeleteAssessmentDialogOpen(false)}
+      >
+        <ModalHeader
+          onClose={() => setIsDeleteAssessmentDialogOpen(false)}
+          heading="Delete Question"
+        />
+
+        <ModalBody>
+          <div className="new-project-dialog">
+            <p>Are you sure you want to delete this question?</p>
+          </div>
+        </ModalBody>
+        <ModalFooter>
+          <Button theme={ThemeType.danger} onClick={deleteQuestion}>
+            Delete
+          </Button>
+          <Button onClick={() => setIsDeleteAssessmentDialogOpen(false)}>
+            Cancel
+          </Button>
         </ModalFooter>
       </Modal>
     </>
