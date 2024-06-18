@@ -29,6 +29,7 @@ interface Props {
   index: number;
   onChange: any;
   onDelete: any;
+  status:string;
 }
 
 const ObjectiveQuestion = (props: Props) => {
@@ -109,6 +110,7 @@ const ObjectiveQuestion = (props: Props) => {
             onClick={() => setIsEditDialogOpen(true)}
             circle
             variant={ButtonVariantType.outline}
+            disabled={props.status!=="Active"}
           >
             <FontAwesomeIcon icon={faPenAlt} />
           </IconButton>
@@ -116,6 +118,7 @@ const ObjectiveQuestion = (props: Props) => {
             onClick={() =>setIsDeleteAssessmentDialogOpen(true)}
             circle
             variant={ButtonVariantType.outline}
+            disabled={props.status!=="Active"}
           >
             <FontAwesomeIcon icon={faTrash} />
           </IconButton>

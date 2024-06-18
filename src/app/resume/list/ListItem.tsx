@@ -34,7 +34,7 @@ const ListItem = (props: Props) => {
       <div className="flat-list-item-main">
         <div>
           <div className="resume-list-item__name">
-            {props.data.data?.name}
+            {props.data?.fileName}
           </div>
         </div>
       </div>

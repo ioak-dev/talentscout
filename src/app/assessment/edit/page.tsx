@@ -339,6 +339,7 @@ const AssessmentPage = () => {
                 key={index}
                 question={item}
                 index={index}
+                status={assessmentData.status}
               />
             ))}
           </div>

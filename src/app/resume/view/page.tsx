@@ -57,13 +57,17 @@ export default function ViewResume() {
     }
   };
 
+  const closeResumeView = () =>{
+    router.back();
+  }
+
   if (!isRouteAuthorized) {
     return <></>;
   }
   return (
     <div>
       <ContextBar>
-        <Button onClick={() => {}}>
+        <Button onClick={() => {closeResumeView()}}>
           <FontAwesomeIcon icon={faClose} />
           Close
         </Button>

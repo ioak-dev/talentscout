@@ -4,6 +4,7 @@ export type Resume = {
   lastModifiedDate?: string;
   createdBy?: string;
   createdDate?: string;
+  fileName?:string;
   data?: {
     name: string;
     currentDesignation?: string;
