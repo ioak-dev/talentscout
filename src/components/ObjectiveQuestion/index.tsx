@@ -110,7 +110,7 @@ const ObjectiveQuestion = (props: Props) => {
             onClick={() => setIsEditDialogOpen(true)}
             circle
             variant={ButtonVariantType.outline}
-            disabled={props.status!=="Active"}
+            disabled={props.status==="Paused" || props.status==="Closed"}
           >
             <FontAwesomeIcon icon={faPenAlt} />
           </IconButton>
@@ -118,7 +118,7 @@ const ObjectiveQuestion = (props: Props) => {
             onClick={() =>setIsDeleteAssessmentDialogOpen(true)}
             circle
             variant={ButtonVariantType.outline}
-            disabled={props.status!=="Active"}
+            disabled={props.status==="Paused" || props.status==="Closed"}
           >
             <FontAwesomeIcon icon={faTrash} />
           </IconButton>

@@ -92,6 +92,7 @@ const AssessmentPage = () => {
     isOpen: false,
     assessmentQuestion: BLANK_ASSESSMENT_QUESTION,
   });
+  const [isLoad, setIsLoad]=useState(false);
 
   useEffect(() => {
     AuthorizationState.subscribe((message) => {
@@ -127,11 +128,13 @@ const AssessmentPage = () => {
   };
 
   const handleSaveAssessment = (data: Assessment) => {
+    setIsLoad(true);
+    setIsEditAssessmentDialogOpen(false);
     saveAssessmentById(assessmentData?.id || "", data, authorization).then(
       (response) => {
         fetchAssessmentById();
         fetchAssessmentQuestions();
-        setIsEditAssessmentDialogOpen(false);
+        setIsLoad(false);
       }
     );
   };
@@ -329,7 +332,7 @@ const AssessmentPage = () => {
           {/* <Button onClick={() => router.back()}>Back</Button> */}
         </ContextBar>
         <div className="page">
-          <div className="assessment-questions">
+        {!isLoad &&<div className="assessment-questions">
             {assessmentQuestionsData.map((item, index: number) => (
               <ObjectiveQuestion
                 onChange={(event: AssessmentQuestion) =>
@@ -342,7 +345,10 @@ const AssessmentPage = () => {
                 status={assessmentData.status}
               />
             ))}
-          </div>
+          </div>}
+          {isLoad && <div className="loader-container">
+        <div className="loader rotating-plane"></div>
+      </div>}
         </div>
       </div>
       <Modal
