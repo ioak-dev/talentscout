@@ -40,7 +40,7 @@ const ListItem = (props: Props) => {
         </div>
         <div className="list-item-subtitle">Skill set</div>
         <div className="assessment-list-item__skillsets">
-        {props.data.skillSet.join(', ')}
+        {props.data.skillSet ? props.data.skillSet?.join(', ') : '-'}
         </div>
         <div className="list-item-subtitle">Response</div>
         <div className="assessment-list-item__responses">12 responses</div>
