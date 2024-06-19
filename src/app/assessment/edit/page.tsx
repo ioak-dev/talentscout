@@ -347,8 +347,8 @@ const AssessmentPage = () => {
             ))}
           </div>}
           {isLoad && <div className="loader-container">
-        <div className="loader rotating-plane"></div>
-      </div>}
+            <div className="loader"></div>
+          <div><p>Questions are being generated, Please wait...</p></div></div>}
         </div>
       </div>
       <Modal
