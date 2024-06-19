@@ -91,7 +91,7 @@ const ObjectiveQuestion = (props: Props) => {
     <>
       <div className="objective-question">
         <div>
-          {props.index + 1}. {props.question?.question}
+        <pre>{props.index + 1}. {props.question?.question}</pre>
         </div>
         <div className="objective-question__choices">
           {props.question?.choices.map((item) => (
