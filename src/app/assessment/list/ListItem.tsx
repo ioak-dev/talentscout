@@ -18,6 +18,10 @@ interface Props {
 
 const ListItem = (props: Props) => {
   const router = useRouter();
+  let formattedDate = "";
+  if (props.data.createdDate) {
+  formattedDate = new Date(props.data.createdDate).toLocaleDateString("en-GB");
+  }
 
   const handleEditAssessmentDetail = (id: string) => {
     router.push(`/assessment/edit?id=${id}`);
@@ -35,7 +39,7 @@ const ListItem = (props: Props) => {
           </div>
 
           <div className="assessment-list-item__created">
-            {props.data.createdDate}
+            {formattedDate}
           </div>
         </div>
         <div className="list-item-subtitle">Skill set</div>
