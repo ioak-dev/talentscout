@@ -43,7 +43,7 @@ const ListItem = (props: Props) => {
         {props.data.skillSet ? props.data.skillSet?.join(', ') : '-'}
         </div>
         <div className="list-item-subtitle">Response</div>
-        <div className="assessment-list-item__responses">12 responses</div>
+        <div className="assessment-list-item__responses">0 responses</div>
       </div>
       <div className="list-item-actions">
         <IconButton

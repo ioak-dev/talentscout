@@ -101,6 +101,7 @@ export const saveAssessmentQuestionById = (
   payload: AssessmentQuestion,
   authorization?: any
 ) => {
+  console.log(payload);
   return httpPut(`/assessment/${id}/question/${payload.id}`, payload, {
     headers: {
       Authorization: authorization?.access_token,

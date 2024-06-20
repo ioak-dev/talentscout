@@ -61,11 +61,13 @@ import EditAssessmentDialog from "./EditAssessmentDialog";
 const sampleData = require("./data.json");
 
 const BLANK_ASSESSMENT_QUESTION: AssessmentQuestion = {
-  question: "",
-  answer: " ",
+  data: {
+    question: "",
+    answer: " ",
+    choices: ["", "", "", ""],
+  },
   assessmentId: "",
   type: "MultipleChoice",
-  choices: ["", "", "", ""],
 };
 
 const AssessmentPage = () => {
@@ -76,6 +78,7 @@ const AssessmentPage = () => {
   const [authorization, setAuthorization] = useState<Authorization>({});
   const [assessmentData, setAssessmentData] = useState<Assessment>({
     name: "",
+    skillSet: "",
   });
   const [assessmentQuestionsData, setAssessmentQuestionsData] = useState<
     AssessmentQuestion[]
@@ -92,7 +95,7 @@ const AssessmentPage = () => {
     isOpen: false,
     assessmentQuestion: BLANK_ASSESSMENT_QUESTION,
   });
-  const [isLoad, setIsLoad]=useState(false);
+  const [isLoad, setIsLoad] = useState(false);
 
   useEffect(() => {
     AuthorizationState.subscribe((message) => {
@@ -108,6 +111,7 @@ const AssessmentPage = () => {
   };
 
   const handleQuestionSave = (event: AssessmentQuestion, index: number) => {
+    console.log(event);
     saveAssessmentQuestionById(
       assessmentData?.id || "",
       event,
@@ -210,18 +214,24 @@ const AssessmentPage = () => {
   };
 
   const handleChoiceTextChange = (event: any, index: number) => {
-    const choices = [...addNewDialogState.assessmentQuestion.choices];
+    const choices = [...addNewDialogState.assessmentQuestion.data.choices];
     choices[index] = event.currentTarget.value;
     setAddNewDialogState({
       ...addNewDialogState,
-      assessmentQuestion: { ...addNewDialogState.assessmentQuestion, choices },
+      assessmentQuestion: {
+        ...addNewDialogState.assessmentQuestion,
+        data: { ...addNewDialogState.assessmentQuestion.data, choices },
+      },
     });
   };
 
   const handleChoiceChange = (answer: string, index: number) => {
     setAddNewDialogState({
       ...addNewDialogState,
-      assessmentQuestion: { ...addNewDialogState.assessmentQuestion, answer },
+      assessmentQuestion: {
+        ...addNewDialogState.assessmentQuestion,
+        data: { ...addNewDialogState.assessmentQuestion.data, answer },
+      },
     });
   };
 
@@ -230,7 +240,10 @@ const AssessmentPage = () => {
       ...addNewDialogState,
       assessmentQuestion: {
         ...addNewDialogState.assessmentQuestion,
-        question: event.target.value,
+        data: {
+          ...addNewDialogState.assessmentQuestion.data,
+          question: event.target.value,
+        },
       },
     });
   };
@@ -332,23 +345,30 @@ const AssessmentPage = () => {
           {/* <Button onClick={() => router.back()}>Back</Button> */}
         </ContextBar>
         <div className="page">
-        {!isLoad &&<div className="assessment-questions">
-            {assessmentQuestionsData.map((item, index: number) => (
-              <ObjectiveQuestion
-                onChange={(event: AssessmentQuestion) =>
-                  handleQuestionSave(event, index)
-                }
-                onDelete={() => handleQuestionDelete(item)}
-                key={index}
-                question={item}
-                index={index}
-                status={assessmentData.status}
-              />
-            ))}
-          </div>}
-          {isLoad && <div className="loader-container">
-            <div className="loader"></div>
-          <div><p>Questions are being generated, Please wait...</p></div></div>}
+          {!isLoad && (
+            <div className="assessment-questions">
+              {assessmentQuestionsData.map((item, index: number) => (
+                <ObjectiveQuestion
+                  onChange={(event: AssessmentQuestion) =>
+                    handleQuestionSave({ ...item, ...event }, index)
+                  }
+                  onDelete={() => handleQuestionDelete(item)}
+                  key={index}
+                  question={item.data}
+                  index={index}
+                  status={assessmentData.status || ""}
+                />
+              ))}
+            </div>
+          )}
+          {isLoad && (
+            <div className="loader-container">
+              <div className="loader"></div>
+              <div>
+                <p>Questions are being generated, Please wait...</p>
+              </div>
+            </div>
+          )}
         </div>
       </div>
       <Modal
@@ -416,14 +436,14 @@ const AssessmentPage = () => {
                 <div className="objective-question-edit">
                   <Textarea
                     name="question"
-                    value={addNewDialogState.assessmentQuestion?.question}
+                    value={addNewDialogState.assessmentQuestion?.data?.question}
                     rows="10"
                     onInput={handleQuestionChange}
                     placeholder="Question"
                     autoFocus
                   />
                   <div className="objective-question__choices">
-                    {addNewDialogState.assessmentQuestion?.choices.map(
+                    {addNewDialogState.assessmentQuestion?.data?.choices.map(
                       (item, index: number) => (
                         <div
                           className="objective-question__choices__choice"
@@ -432,7 +452,7 @@ const AssessmentPage = () => {
                           <Radio
                             checked={
                               item ===
-                              addNewDialogState.assessmentQuestion.answer
+                              addNewDialogState.assessmentQuestion.data?.answer
                             }
                             value={item}
                             onChange={() => handleChoiceChange(item, index)}

@@ -78,7 +78,7 @@ const ObjectiveQuestion = (props: Props) => {
   };
 
   const handleSave = () => {
-    props.onChange(state);
+    props.onChange({data: state});
     setIsEditDialogOpen(false);
   };
 
@@ -110,7 +110,7 @@ const ObjectiveQuestion = (props: Props) => {
             onClick={() => setIsEditDialogOpen(true)}
             circle
             variant={ButtonVariantType.outline}
-            disabled={props.status==="Paused" || props.status==="Closed"}
+            disabled={props.status==="Active" || props.status==="Closed"}
           >
             <FontAwesomeIcon icon={faPenAlt} />
           </IconButton>
@@ -118,7 +118,7 @@ const ObjectiveQuestion = (props: Props) => {
             onClick={() =>setIsDeleteAssessmentDialogOpen(true)}
             circle
             variant={ButtonVariantType.outline}
-            disabled={props.status==="Paused" || props.status==="Closed"}
+            disabled={props.status==="Active" || props.status==="Closed"}
           >
             <FontAwesomeIcon icon={faTrash} />
           </IconButton>

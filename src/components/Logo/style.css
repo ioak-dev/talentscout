@@ -7,7 +7,7 @@
   align-items: center;
 }
 .logo .logo--image img, .logo .logo--text img {
-  height: 36px;
+  height: 20px;
 }
 .logo--text {
   width: auto;
@@ -16,7 +16,7 @@
   height: 70% !important;
 }
 .logo--image {
-  width: 60px;
+  /* width: 60px; */
   display: flex;
   justify-content: center;
 }
