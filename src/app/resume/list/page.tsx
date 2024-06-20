@@ -38,6 +38,7 @@ export default function Resumes() {
   const [searchText, setSearchText] = useState("");
   const [isNewResumeDialogOpen, setIsNewResumeDialogOpen] = useState(false);
   const [newFileAttachment, setNewFileAttachment] = useState<any>();
+  const [isLoad, setIsLoad] = useState(false);
 
   useEffect(() => {
     AuthorizationState.subscribe((message) => {
@@ -55,9 +56,11 @@ export default function Resumes() {
   };
 
   const handleSaveNewAssignment = () => {
+    setIsNewResumeDialogOpen(false);
+    setIsLoad(true);
     saveResume(newFileAttachment, authorization).then((response: any) => {
-      setIsNewResumeDialogOpen(false);
       // fetchResumes();
+      setIsLoad(false);
       router.push(`/resume/view?id=${response.id}`);
     });
   };
@@ -105,6 +108,14 @@ export default function Resumes() {
           </Button>
         </ContextBar>
         <div className="page">
+        {isLoad && (
+            <div className="loader-container">
+              <div className="loader"></div>
+              <div>
+                <p>Screening the resume, Please wait...</p>
+              </div>
+            </div>
+          )}
           <div className="large-search-bar">
             <Input
               placeholder="Type to search"
