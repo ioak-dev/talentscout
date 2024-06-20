@@ -1,0 +1,11 @@
+.module_list{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    justify-content: center;
+}
+
+.module_list Button{
+    padding: 75px;
+    margin: 30px;
+}

@@ -57,12 +57,12 @@ const Navbar = () => {
       <Logo />
       {authorization?.isAuth && (
       <><ul>
-            <li>
+            {/* <li>
               <Link href="/assessment/list">Candidate Assessment</Link>
             </li>
             <li>
               <Link href="/resume/list">Resume screener</Link>
-            </li>
+            </li> */}
           </ul><div className="navbar_right">
               <div>
                 {darkMode && (
