@@ -70,9 +70,7 @@ export default function Resumes() {
       setView(
         data?.filter(
           (item) =>
-            item.data?.name.toLowerCase().includes(searchText) ||
-            item.data?.overview?.toLowerCase().includes(searchText)
-        )
+            item?.fileName?.toLowerCase().includes(searchText) )
       );
     } else {
       setView(data);
