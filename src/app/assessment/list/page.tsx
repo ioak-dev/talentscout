@@ -122,30 +122,33 @@ const AssessmentsPage = () => {
   return (
     <>
       <div>
-        <ContextBar title="Assessments list">
+        <ContextBar>
           <Button onClick={() => setIsNewAssessmentDialogOpen(true)}>
             <FontAwesomeIcon icon={faPlus} /> Assessment
           </Button>
         </ContextBar>
         <div className="page">
-          <div className="large-search-bar">
-            <Input
-              placeholder="Type to search"
-              value={searchText}
-              name="searchText"
-              onInput={handleSearchTextChange}
-            />
-          </div>
+          {data?.length !== 0 && (
+            <div className="large-search-bar">
+              <Input
+                placeholder="Type to search"
+                value={searchText}
+                name="searchText"
+                onInput={handleSearchTextChange}
+              />
+            </div>
+          )}
           <div className="card-list">
             {view?.map((item, index) => (
               <ListItem key={index} data={item} />
             ))}
           </div>
-          {(data?.length == 0) &&
-          <div className="no-data-container">
-            <h2>No Data Available </h2>
-            <p>Please add the assessment</p>
-          </div>}
+          {data?.length == 0 && (
+            <div className="no-data-container">
+              <h2>No assessments present</h2>
+              {/* <p>Please add the assessment</p> */}
+            </div>
+          )}
         </div>
       </div>
       <Modal

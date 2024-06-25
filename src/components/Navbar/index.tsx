@@ -16,10 +16,11 @@ import { DarkModeState } from "@/store/ProfileStore";
 import { useEffect, useState } from "react";
 import Logo from "../Logo";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMoon, faSun,faPowerOff } from "@fortawesome/free-solid-svg-icons";
+import { faMoon, faSun, faPowerOff } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/navigation";
 import { AuthorizationState } from "@/store/AuthorizationStore";
 import { Authorization } from "@/types/Authorization";
+import Timer from "./Timer";
 
 const Navbar = () => {
   const [darkMode, setDarkMode] = useState(false);
@@ -35,7 +36,7 @@ const Navbar = () => {
 
   useEffect(() => {
     AuthorizationState.subscribe((message) => {
-      console.log(message)
+      console.log(message);
       setAuthorization(message);
     });
   }, []);
@@ -48,22 +49,25 @@ const Navbar = () => {
     sessionStorage.clear();
     AuthorizationState.next({});
     router.push("/login");
-    setIsLogoutDialogOpen(false)
+    setIsLogoutDialogOpen(false);
   };
 
   return (
     <>
-    <nav className="navbar">
-      <Logo />
-      {authorization?.isAuth && (
-      <><ul>
-            {/* <li>
+      <nav className="navbar">
+        <Logo />
+        {authorization?.isAuth && (
+          <>
+            <ul>
+              {/* <li>
               <Link href="/assessment/list">Candidate Assessment</Link>
             </li>
             <li>
               <Link href="/resume/list">Resume screener</Link>
             </li> */}
-          </ul><div className="navbar_right">
+            </ul>
+            <div className="navbar_right">
+              <Timer />
               <div>
                 {darkMode && (
                   <IconButton
@@ -87,38 +91,41 @@ const Navbar = () => {
                 )}
               </div>
               <div className="logout">
-                <IconButton onClick={() => setIsLogoutDialogOpen(true)}
+                <IconButton
+                  onClick={() => setIsLogoutDialogOpen(true)}
                   circle
                   theme={ThemeType.primary}
-                  variant={ButtonVariantType.outline}>
+                  variant={ButtonVariantType.outline}
+                >
                   <FontAwesomeIcon icon={faPowerOff} size="xs" />
                 </IconButton>
               </div>
-            </div></>
-      )}
-    </nav>
-    <Modal
-    isOpen={isLogoutDialogOpen}
-    onClose={() => setIsLogoutDialogOpen(false)}
-  >
-    <ModalHeader
-      onClose={() => setIsLogoutDialogOpen(false)}
-      heading="Confirm Logout"
-    />
+            </div>
+          </>
+        )}
+      </nav>
+      <Modal
+        isOpen={isLogoutDialogOpen}
+        onClose={() => setIsLogoutDialogOpen(false)}
+      >
+        <ModalHeader
+          onClose={() => setIsLogoutDialogOpen(false)}
+          heading="Confirm Logout"
+        />
 
-    <ModalBody>
-      <div className="new-project-dialog">
-        <p>Are you sure you want to log out?</p>
-      </div>
-    </ModalBody>
-    <ModalFooter>
-      <Button theme={ThemeType.primary} onClick={logout}>
-        Confirm
-      </Button>
-      <Button onClick={() => setIsLogoutDialogOpen(false)}>Cancel</Button>
-    </ModalFooter>
-  </Modal>
-  </>
+        <ModalBody>
+          <div className="new-project-dialog">
+            <p>Are you sure you want to log out?</p>
+          </div>
+        </ModalBody>
+        <ModalFooter>
+          <Button theme={ThemeType.primary} onClick={logout}>
+            Confirm
+          </Button>
+          <Button onClick={() => setIsLogoutDialogOpen(false)}>Cancel</Button>
+        </ModalFooter>
+      </Modal>
+    </>
   );
 };
 

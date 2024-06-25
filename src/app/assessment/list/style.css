@@ -4,11 +4,11 @@
   padding: 0 12px;
   font-size: 12px;
   background-color: var(--theme-warning-600);
-  color: var(--theme-warning-600i);
+  color: #fff;
 }
 
 .assessment-list-item__name  {
-  font-weight: bold;
+  font-weight: 500;
 }
 .assessment-list-item__name .basicui-link {
   font-size: 14px;

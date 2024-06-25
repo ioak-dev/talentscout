@@ -68,9 +68,9 @@ export default function Resumes() {
   useEffect(() => {
     if (searchText && searchText !== "") {
       setView(
-        data?.filter(
-          (item) =>
-            item?.fileName?.toLowerCase().includes(searchText) )
+        data?.filter((item) =>
+          item?.fileName?.toLowerCase().includes(searchText)
+        )
       );
     } else {
       setView(data);
@@ -106,7 +106,7 @@ export default function Resumes() {
           </Button>
         </ContextBar>
         <div className="page">
-        {isLoad && (
+          {isLoad && (
             <div className="loader-container">
               <div className="loader"></div>
               <div>
@@ -114,19 +114,27 @@ export default function Resumes() {
               </div>
             </div>
           )}
-          <div className="large-search-bar">
-            <Input
-              placeholder="Type to search"
-              value={searchText}
-              name="searchText"
-              onInput={handleSearchTextChange}
-            />
-          </div>
+          {data?.length !== 0 && (
+            <div className="large-search-bar">
+              <Input
+                placeholder="Type to search"
+                value={searchText}
+                name="searchText"
+                onInput={handleSearchTextChange}
+              />
+            </div>
+          )}
           <div className="flat-list">
             {view?.map((item, index) => (
               <ListItem key={index} data={item} />
             ))}
           </div>
+          {data?.length == 0 && (
+            <div className="no-data-container">
+              <h2>No resumes present</h2>
+              {/* <p>Please add the assessment</p> */}
+            </div>
+          )}
         </div>
       </div>
 
