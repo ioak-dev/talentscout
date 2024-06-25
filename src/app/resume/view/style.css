@@ -88,10 +88,13 @@
   flex-wrap: wrap;
 }
 .view-resume__experience__entry {
-  background-color: var(--theme-black-extended-700);
+  background-color: var(--theme-white-600);
   padding: 6px 12px;
   margin: 0 12px 12px 0;
   border-radius: 4px;
+}
+.basicui-dark .view-resume__experience__entry {
+  background-color: var(--theme-black-extended-700);
 }
 .view-resume__experience__entry__data {
   font-size: 24px;
