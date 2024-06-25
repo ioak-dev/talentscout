@@ -57,9 +57,9 @@ export default function ViewResume() {
     }
   };
 
-  const closeResumeView = () =>{
+  const closeResumeView = () => {
     router.back();
-  }
+  };
 
   if (!isRouteAuthorized) {
     return <></>;
@@ -67,7 +67,11 @@ export default function ViewResume() {
   return (
     <div>
       <ContextBar>
-        <Button onClick={() => {closeResumeView()}}>
+        <Button
+          onClick={() => {
+            closeResumeView();
+          }}
+        >
           <FontAwesomeIcon icon={faClose} />
           Close
         </Button>
@@ -76,13 +80,58 @@ export default function ViewResume() {
         {resumeData.data && (
           <div className="view-resume">
             <div className="view-resume__element view-resume__heading">
-              <h1 className="view-resume__heading__name">{resumeData.data?.name}</h1>
+              <h1 className="view-resume__heading__name">
+                {resumeData.data?.name}
+              </h1>
               <div className="view-resume__heading__designation">
                 {resumeData.data.standardizedDesignation} |{" "}
                 {resumeData.data.totalExperience}
               </div>
               <div className="view-resume__heading__overview">
                 {resumeData.data.overview || "-"}
+              </div>
+            </div>
+
+            <div className="view-resume__experience">
+              <div className="view-resume__experience__entry">
+                <div className="view-resume__experience__entry__data">
+                  {resumeData.data.totalExperience || "-"}
+                </div>
+                <div className="view-resume__experience__entry__label">
+                  Total experience
+                </div>
+              </div>
+              <div className="view-resume__experience__entry">
+                <div className="view-resume__experience__entry__data">
+                  {resumeData.data.industryNormalizedExperience || "-"}
+                </div>
+                <div className="view-resume__experience__entry__label">
+                  Industry Normalized
+                </div>
+              </div>
+              <div className="view-resume__experience__entry">
+                <div className="view-resume__experience__entry__data">
+                  {resumeData.data.recentExperience || "-"}
+                </div>
+                <div className="view-resume__experience__entry__label">
+                  Recent experience
+                </div>
+              </div>
+              <div className="view-resume__experience__entry">
+                <div className="view-resume__experience__entry__data">
+                  {resumeData.data.avgExperiencePerCompany || "-"}
+                </div>
+                <div className="view-resume__experience__entry__label">
+                  Per company average
+                </div>
+              </div>
+              <div className="view-resume__experience__entry">
+                <div className="view-resume__experience__entry__data">
+                  {resumeData.data.longestExperience || "-"}
+                </div>
+                <div className="view-resume__experience__entry__label">
+                  Longest on an organization
+                </div>
               </div>
             </div>
 
@@ -160,7 +209,7 @@ export default function ViewResume() {
               </div>
             </div>
 
-            <div className="view-resume__element__group">
+            {/* <div className="view-resume__element__group">
               <div className="view-resume__element">
                 <div className="view-resume__element__label">
                   <div className="view-resume__element__label__icon">
@@ -190,7 +239,7 @@ export default function ViewResume() {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         )}
       </div>

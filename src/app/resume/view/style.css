@@ -81,3 +81,21 @@
   font-weight: bold;
   text-transform: capitalize;
 }
+
+.view-resume__experience {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.view-resume__experience__entry {
+  background-color: var(--theme-black-extended-700);
+  padding: 6px 12px;
+  margin: 0 12px 12px 0;
+  border-radius: 4px;
+}
+.view-resume__experience__entry__data {
+  font-size: 24px;
+}
+.view-resume__experience__entry__label {
+  font-size: 12px;
+}
