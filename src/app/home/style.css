@@ -1,10 +1,10 @@
 .module_list {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: 12px;
   justify-content: center;
   justify-items: center;
-  align-items: center;
+  /* align-items: center; */
 }
 
 .home-tile {
