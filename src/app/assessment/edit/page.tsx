@@ -29,6 +29,7 @@ import {
   deleteAssessmentById,
   deleteAssessmentQuestionById,
   generateNewAssessmentQuestion,
+  generateQuestionsUsingAi,
   getAssessmentById,
   getAssessmentQuestions,
   saveAssessmentById,
@@ -113,7 +114,7 @@ const AssessmentPage = () => {
   const handleQuestionSave = (event: AssessmentQuestion, index: number) => {
     console.log(event);
     saveAssessmentQuestionById(
-      assessmentData?.id || "",
+      assessmentData?._id || "",
       event,
       authorization
     ).then((response) => {
@@ -123,7 +124,7 @@ const AssessmentPage = () => {
 
   const handleQuestionDelete = (event: AssessmentQuestion) => {
     deleteAssessmentQuestionById(
-      assessmentData?.id || "",
+      assessmentData?._id || "",
       event,
       authorization
     ).then((response) => {
@@ -134,7 +135,7 @@ const AssessmentPage = () => {
   const handleSaveAssessment = (data: Assessment) => {
     setIsLoad(true);
     setIsEditAssessmentDialogOpen(false);
-    saveAssessmentById(assessmentData?.id || "", data, authorization).then(
+    saveAssessmentById(assessmentData?._id || "", data, authorization).then(
       (response) => {
         fetchAssessmentById();
         fetchAssessmentQuestions();
@@ -144,7 +145,7 @@ const AssessmentPage = () => {
   };
 
   const handleDeleteAssessment = () => {
-    deleteAssessmentById(assessmentData?.id || "").then((response) => {
+    deleteAssessmentById(assessmentData?._id || "").then((response) => {
       router.back();
     });
   };
@@ -185,7 +186,7 @@ const AssessmentPage = () => {
       isOpen: false,
       assessmentQuestion: {
         ...BLANK_ASSESSMENT_QUESTION,
-        assessmentId: assessmentData.id || "",
+        assessmentId: assessmentData._id || "",
       },
     });
   };
@@ -195,13 +196,13 @@ const AssessmentPage = () => {
       isOpen: true,
       assessmentQuestion: {
         ...BLANK_ASSESSMENT_QUESTION,
-        assessmentId: assessmentData.id || "",
+        assessmentId: assessmentData._id || "",
       },
     });
   };
 
   const handleGenerateNewQuestion = () => {
-    generateNewAssessmentQuestion(assessmentData.id || "", authorization).then(
+    generateNewAssessmentQuestion(assessmentData._id || "", authorization).then(
       (response) => {
         setAddNewDialogState({
           ...addNewDialogState,
@@ -249,9 +250,9 @@ const AssessmentPage = () => {
   };
 
   const handleSaveNewQuestion = () => {
-    if (addNewDialogState.assessmentQuestion.id) {
+    if (addNewDialogState.assessmentQuestion._id) {
       saveAssessmentQuestionById(
-        assessmentData.id || "",
+        assessmentData._id || "",
         addNewDialogState.assessmentQuestion,
         authorization
       ).then((response) => {
@@ -263,7 +264,7 @@ const AssessmentPage = () => {
       });
     } else {
       createNewQuestion(
-        assessmentData.id || "",
+        assessmentData._id || "",
         addNewDialogState.assessmentQuestion,
         authorization
       ).then((response) => {
@@ -279,11 +280,25 @@ const AssessmentPage = () => {
   const handleStatusChange = (
     status: "Draft" | "Active" | "Paused" | "Closed"
   ) => {
-    changeAssessmentStatus(assessmentData.id || "", status, authorization).then(
-      (response) => {
-        fetchAssessmentById();
-      }
-    );
+    changeAssessmentStatus(
+      assessmentData._id || "",
+      status,
+      authorization
+    ).then((response) => {
+      fetchAssessmentById();
+    });
+  };
+
+  const handleGenerateUsingAi = () => {
+    const text =
+      "Well Experienced with SAP ABAP CDS View (Core Data Services / HANA). Business Technology Platform (BTP). Should have knowledge of know-how of Cloud Foundry environment on BTP. Android SDK for Fiori. Experienced in moderating customer blueprint workshops, managing system requirements and designing according to user experience solution. Focus on SAP's latest user experience technologies. Independently execute system configuration, development and documentation tasks with SAP FIORI / HTML5 / OData Services and SAP CD. Consulting experience, working with user interface technology. Understanding of the SAP technology stack and basics. Framework development e.g., React, Angular GS. Experience with SAP UI5/ Open UI5. Good knowledge on Data dictionary and related concepts. Should be able to develop technical specifications independently.";
+    generateQuestionsUsingAi(
+      assessmentData._id || "",
+      text,
+      authorization
+    ).then((response) => {
+      console.log(response);
+    });
   };
 
   if (!isRouteAuthorized) {
@@ -298,6 +313,12 @@ const AssessmentPage = () => {
             <Button onClick={handleAddNewQuestion}>
               <FontAwesomeIcon icon={faPlus} />
               Question
+            </Button>
+          )}
+          {["Draft", "Paused"].includes(assessmentData.status || "") && (
+            <Button onClick={handleGenerateUsingAi}>
+              <FontAwesomeIcon icon={faWandMagic} />
+              Generate using AI
             </Button>
           )}
           {["Draft", "Paused"].includes(assessmentData.status || "") && (

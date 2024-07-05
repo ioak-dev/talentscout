@@ -102,7 +102,7 @@ export const saveAssessmentQuestionById = (
   authorization?: any
 ) => {
   console.log(payload);
-  return httpPut(`/assessment/${id}/question/${payload.id}`, payload, {
+  return httpPut(`/assessment/${id}/question/${payload._id}`, payload, {
     headers: {
       Authorization: authorization?.access_token,
     },
@@ -144,7 +144,7 @@ export const deleteAssessmentQuestionById = (
   payload: AssessmentQuestion,
   authorization?: any
 ) => {
-  return httpDelete(`/assessment/${id}/question/${payload.id}`, {
+  return httpDelete(`/assessment/${id}/question/${payload._id}`, {
     headers: {
       Authorization: authorization?.access_token,
     },
@@ -188,6 +188,31 @@ export const changeAssessmentStatus = (
   return httpPost(
     `/assessment/${id}/status/${status}`,
     {},
+    {
+      headers: {
+        Authorization: authorization?.access_token,
+      },
+    }
+  )
+    .then((response) => {
+      if (response.status === 200) {
+        return Promise.resolve(response.data);
+      }
+      return Promise.resolve([]);
+    })
+    .catch((error) => {
+      return Promise.resolve([]);
+    });
+};
+
+export const generateQuestionsUsingAi = (
+  id: string,
+  text: string,
+  authorization?: any
+) => {
+  return httpPost(
+    `/assessment/${id}/generate-questions/2`,
+    { text },
     {
       headers: {
         Authorization: authorization?.access_token,

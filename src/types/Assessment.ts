@@ -2,7 +2,7 @@ export type Assessment = {
   name: string;
   jobDescription?: string;
   duration?: string;
-  id?: string;
+  _id?: string;
   status?: "Draft" | "Active" | "Paused" | "Closed";
   lastModifiedBy?: string;
   lastModifiedDate?: string;

@@ -6,7 +6,7 @@ export type AssessmentQuestion = {
     answer: string;
     choices: string[];
   };
-  id?: string;
+  _id?: string;
   lastModifiedBy?: string;
   lastModifiedDate?: string;
   createdBy?: string;

@@ -33,7 +33,7 @@ const ListItem = (props: Props) => {
         <div className="status-chip">{props.data.status}</div>
         <div>
           <div className="assessment-list-item__name">
-            {/* <Link href={`/assessment/edit/questions?id=${props.data.id}`}> */}
+            {/* <Link href={`/assessment/edit/questions?id=${props.data._id}`}> */}
             {props.data.name}
             {/* </Link> */}
           </div>
@@ -52,14 +52,14 @@ const ListItem = (props: Props) => {
       <div className="list-item-actions">
         <IconButton
           circle
-          onClick={() => handleEditAssessmentDetail(props.data.id || "")}
+          onClick={() => handleEditAssessmentDetail(props.data._id || "")}
           variant={ButtonVariantType.outline}
         >
           <FontAwesomeIcon icon={faPen} />
         </IconButton>
         <IconButton
           circle
-          onClick={() => handleEditAssessmentDetail(props.data.id || "")}
+          onClick={() => handleEditAssessmentDetail(props.data._id || "")}
           variant={ButtonVariantType.outline}
         >
           <FontAwesomeIcon icon={faChartSimple} />
