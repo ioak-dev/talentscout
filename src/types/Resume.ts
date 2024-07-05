@@ -12,7 +12,7 @@ export type Resume = {
     overview?: string;
     totalExperience?: string;
     industryNormalizedExperience?: string;
-    avgExperiencePerCompany?: string;
+    averageExperiencePerCompany?: string;
     longestExperience?: string;
     recentExperience?: string;
     technicalSkills?: any;

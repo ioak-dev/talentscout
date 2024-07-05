@@ -119,7 +119,7 @@ export default function ViewResume() {
               </div>
               <div className="view-resume__experience__entry">
                 <div className="view-resume__experience__entry__data">
-                  {resumeData.data.avgExperiencePerCompany || "-"}
+                  {resumeData.data.averageExperiencePerCompany || "-"}
                 </div>
                 <div className="view-resume__experience__entry__label">
                   Per company average
