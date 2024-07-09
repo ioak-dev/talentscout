@@ -5,7 +5,7 @@
     padding: 24px 0;
 }
 
-.assessment-detail-form {
+.assessment-detail-form,.ai-question-generate {
     display: grid;
     grid-auto-flow: row;
     row-gap: 12px;
@@ -13,6 +13,10 @@
 
 .assessment-detail-form textarea {
     height: 240px;
+}
+
+.ai-question-generate textarea {
+  height: 240px;
 }
 
 .assessment-questions-newdialog {

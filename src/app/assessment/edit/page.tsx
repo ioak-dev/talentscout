@@ -90,13 +90,16 @@ const AssessmentPage = () => {
     useState(false);
   const [addNewDialogState, setAddNewDialogState] = useState<{
     isOpen: boolean;
-    type?: "manual" | "generated" | "edit-generated";
-    assessmentQuestion: AssessmentQuestion;
+    type?: "manual" | "generated" | "edit-generated" | "Ai-New-Question";
+    assessmentQuestion?: AssessmentQuestion;
   }>({
     isOpen: false,
     assessmentQuestion: BLANK_ASSESSMENT_QUESTION,
   });
   const [isLoad, setIsLoad] = useState(false);
+  const [generateQuestionDescription, setGenerateQuestionDescription] =
+  useState('');
+  const [numberOfQuestion,setNumberOfQuestion]=useState(10);
 
   useEffect(() => {
     AuthorizationState.subscribe((message) => {
@@ -162,6 +165,7 @@ const AssessmentPage = () => {
       getAssessmentById(authorization, searchParams.get("id") || "").then(
         (response) => {
           setAssessmentData(response);
+          setGenerateQuestionDescription(response.jobDescription)
         }
       );
     }
@@ -178,7 +182,15 @@ const AssessmentPage = () => {
   };
 
   const handleAddNewDialogStateChange = (event: any) => {
-    setAddNewDialogState({ ...addNewDialogState, ...event });
+    setAddNewDialogState({
+      isOpen: true,
+      assessmentQuestion: {
+        ...BLANK_ASSESSMENT_QUESTION,
+        assessmentId: assessmentData._id || "",
+      },
+      ...event 
+    });
+    // setAddNewDialogState({ ...addNewDialogState, ...event });
   };
 
   const closeAddNewQuestionDialog = () => {
@@ -290,16 +302,33 @@ const AssessmentPage = () => {
   };
 
   const handleGenerateUsingAi = () => {
-    const text =
-      "Well Experienced with SAP ABAP CDS View (Core Data Services / HANA). Business Technology Platform (BTP). Should have knowledge of know-how of Cloud Foundry environment on BTP. Android SDK for Fiori. Experienced in moderating customer blueprint workshops, managing system requirements and designing according to user experience solution. Focus on SAP's latest user experience technologies. Independently execute system configuration, development and documentation tasks with SAP FIORI / HTML5 / OData Services and SAP CD. Consulting experience, working with user interface technology. Understanding of the SAP technology stack and basics. Framework development e.g., React, Angular GS. Experience with SAP UI5/ Open UI5. Good knowledge on Data dictionary and related concepts. Should be able to develop technical specifications independently.";
+    const text = generateQuestionDescription;
     generateQuestionsUsingAi(
       assessmentData._id || "",
       text,
       authorization
     ).then((response) => {
       console.log(response);
+      setAddNewDialogState({
+        isOpen: false,
+      });
     });
   };
+
+  const handleDescriptionChange = (event:any) =>{
+    setGenerateQuestionDescription(event.target.value)
+  }
+
+  const handleNumberOfQuestionChange = (event:any) => {
+    setNumberOfQuestion(event.target.value)
+  }
+
+  const openAiQuestionModal =(event:any) =>{
+    setAddNewDialogState({
+      isOpen: true,
+      ...event
+    });
+  }
 
   if (!isRouteAuthorized) {
     return <></>;
@@ -310,24 +339,26 @@ const AssessmentPage = () => {
       <div>
         <ContextBar title={assessmentData.name}>
           {["Draft", "Paused"].includes(assessmentData.status || "") && (
-            <Button onClick={handleAddNewQuestion}>
+            <Button onClick={() =>
+              handleAddNewDialogStateChange({ type: "manual" })
+            }>
               <FontAwesomeIcon icon={faPlus} />
               Question
             </Button>
           )}
           {["Draft", "Paused"].includes(assessmentData.status || "") && (
-            <Button onClick={handleGenerateUsingAi}>
+            <Button onClick={() =>openAiQuestionModal({ type: "Ai-New-Question" })} >
               <FontAwesomeIcon icon={faWandMagic} />
               Generate using AI
             </Button>
           )}
-          {["Draft", "Paused"].includes(assessmentData.status || "") && (
+          {/* {["Draft", "Paused"].includes(assessmentData.status || "") && (
             <Button onClick={() => setIsEditAssessmentDialogOpen(true)}>
               <FontAwesomeIcon icon={faPen} />
               Job description
             </Button>
-          )}
-          {["Draft", "Paused"].includes(assessmentData.status || "") && (
+          )} */}
+          {/* {["Draft", "Paused"].includes(assessmentData.status || "") && (
             <Button
               onClick={() => handleStatusChange("Active")}
               theme={ThemeType.primary}
@@ -362,7 +393,7 @@ const AssessmentPage = () => {
               <FontAwesomeIcon icon={faStop} />
               Close
             </Button>
-          )}
+          )} */}
           {/* <Button onClick={() => router.back()}>Back</Button> */}
         </ContextBar>
         <div className="page">
@@ -402,7 +433,7 @@ const AssessmentPage = () => {
         />
         <ModalBody>
           <div className="assessment-questions-newdialog">
-            {!addNewDialogState.type && (
+            {/* {!addNewDialogState.type && (
               <div className="assessment-questions-newdialog__type">
                 <Button
                   onClick={() =>
@@ -423,8 +454,8 @@ const AssessmentPage = () => {
                   Generate question using AI
                 </Button>
               </div>
-            )}
-            {addNewDialogState.type === "generated" && (
+            )} */}
+            {/* {addNewDialogState.type === "generated" && (
               <div>
                 <div>
                   New question has been generated and saved to your assessment
@@ -450,7 +481,7 @@ const AssessmentPage = () => {
                   </Button>
                 </div>
               </div>
-            )}
+            )} */}
 
             {addNewDialogState.type &&
               ["manual", "edit-generated"].includes(addNewDialogState.type) && (
@@ -492,6 +523,24 @@ const AssessmentPage = () => {
                   </div>
                 </div>
               )}
+              {addNewDialogState.type && 
+              ["Ai-New-Question"].includes(addNewDialogState.type) && (
+                <div className="ai-question-generate">
+                  <Input 
+                    type="number"  
+                    value={numberOfQuestion}
+                    label="Number of questions"
+                    onInput={handleNumberOfQuestionChange}/>
+                  <Textarea
+                    name="Generate based on"
+                    label="Generate based on"
+                    value={generateQuestionDescription}
+                    onInput={handleDescriptionChange}
+                    placeholder="Question"
+                    autoFocus
+                  />
+                </div>
+              )}
           </div>
         </ModalBody>
         {addNewDialogState.type &&
@@ -500,6 +549,22 @@ const AssessmentPage = () => {
               {/* {addNewDialogState.type === "manual" && (
               <> */}
               <Button theme={ThemeType.primary} onClick={handleSaveNewQuestion}>
+                <FontAwesomeIcon icon={faCheck} />
+                Save
+              </Button>
+              <IconButton onClick={closeAddNewQuestionDialog}>
+                <FontAwesomeIcon icon={faClose} />
+              </IconButton>
+              {/* </>
+            )} */}
+            </ModalFooter>
+          )}
+          {addNewDialogState.type &&
+          ["Ai-New-Question"].includes(addNewDialogState.type) && (
+            <ModalFooter>
+              {/* {addNewDialogState.type === "manual" && (
+              <> */}
+              <Button theme={ThemeType.primary} onClick={handleGenerateUsingAi}>
                 <FontAwesomeIcon icon={faCheck} />
                 Save
               </Button>

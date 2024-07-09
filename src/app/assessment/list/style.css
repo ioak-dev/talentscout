@@ -22,3 +22,20 @@
 .no-data-container{
   text-align: center;
 }
+
+.list-item-actions{
+  display: flex;
+  justify-content: space-between;
+}
+
+.list-item-status-buttons{
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  
+}
+
+.list-item-icon-buttons{
+  display: flex;
+  gap: 5px;
+}

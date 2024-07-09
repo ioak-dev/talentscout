@@ -33,6 +33,8 @@ import {
   useRouteAuthorization,
 } from "@/lib/RouteAuthorizationHook";
 import ListItem from "./ListItem";
+import EditAssessmentDialog from "../edit/EditAssessmentDialog";
+import { saveAssessmentById } from "../edit/service";
 
 const AssessmentsPage = () => {
   const { hasPermissions, isRouteAuthorized } = useRouteAuthorization("1");
@@ -49,6 +51,13 @@ const AssessmentsPage = () => {
     useState(false);
   const [newAssignmentForm, setNewAssignmentForm] = useState<Assessment>({
     name: "",
+  });
+  const [isEditAssessmentDialogOpen, setIsEditAssessmentDialogOpen] =
+    useState(false);
+  const [assessmentId,setAssessmentId]=useState(null);
+  const [assessmentData, setAssessmentData] = useState<Assessment>({
+    name: "",
+    skillSet: "",
   });
 
   useEffect(() => {
@@ -115,6 +124,21 @@ const AssessmentsPage = () => {
     });
   };
 
+  const handleEditAssessment = (id:any,data:Assessment) =>{
+    setAssessmentData(data);
+    setIsEditAssessmentDialogOpen(true);
+  }
+
+  const handleSaveAssessment = (data: Assessment) => {
+    setIsEditAssessmentDialogOpen(false);
+    saveAssessmentById(assessmentData?._id || "", data, authorization).then(
+      (response) => {
+        console.log(response)
+        fetchAssessments();
+      }
+    );
+  };
+
   if (!isRouteAuthorized) {
     return <></>;
   }
@@ -140,7 +164,11 @@ const AssessmentsPage = () => {
           )}
           <div className="card-list">
             {view?.map((item, index) => (
-              <ListItem key={index} data={item} />
+              <ListItem key={index} 
+                data={item}
+                handleEditAssessment={handleEditAssessment}
+                authorization={authorization}
+                fetchAssessments={fetchAssessments}/>
             ))}
           </div>
           {data?.length == 0 && (
@@ -181,6 +209,12 @@ const AssessmentsPage = () => {
           </IconButton>
         </ModalFooter>
       </Modal>
+      <EditAssessmentDialog
+        isOpen={isEditAssessmentDialogOpen}
+        onClose={() => setIsEditAssessmentDialogOpen(false)}
+        data={assessmentData}
+        onSave={handleSaveAssessment}
+      />
     </>
   );
 };

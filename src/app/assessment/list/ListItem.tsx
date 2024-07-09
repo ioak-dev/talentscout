@@ -1,6 +1,6 @@
 "use client";
 
-import { ButtonVariantType, IconButton, Input, Link, ThemeType } from "basicui";
+import { ButtonVariantType, IconButton, Input, Link, ThemeType, Button } from "basicui";
 import { redirect, useRouter } from "next/navigation";
 import { Assessment } from "@/types/Assessment";
 import "./style.css";
@@ -9,11 +9,15 @@ import {
   faChartSimple,
   faList,
   faPen,
-  faQuestion,
+  faQuestion,faEye,faPlay,faPause,faStop
 } from "@fortawesome/free-solid-svg-icons";
+import { changeAssessmentStatus } from "../edit/service";
 
 interface Props {
   data: Assessment;
+  handleEditAssessment:any;
+  authorization:any;
+  fetchAssessments:any;
 }
 
 const ListItem = (props: Props) => {
@@ -25,6 +29,18 @@ const ListItem = (props: Props) => {
 
   const handleEditAssessmentDetail = (id: string) => {
     router.push(`/assessment/edit?id=${id}`);
+  };
+
+  const handleStatusChange = (
+    status: "Draft" | "Active" | "Paused" | "Closed"
+  ) => {
+    changeAssessmentStatus(
+      props.data._id || "",
+      status,
+      props.authorization
+    ).then((response) => {
+      props.fetchAssessments();
+    });
   };
 
   return (
@@ -50,9 +66,55 @@ const ListItem = (props: Props) => {
         <div className="assessment-list-item__responses">0 responses</div>
       </div>
       <div className="list-item-actions">
-        <IconButton
+      <div className="list-item-status-buttons">
+      {["Draft", "Paused"].includes(props.data.status || "") && (
+            <Button
+              onClick={() => handleStatusChange("Active")}
+              theme={ThemeType.primary}
+            >
+              <FontAwesomeIcon icon={faPlay} />
+              Launch
+            </Button>
+          )}
+          {props.data.status === "Closed" && (
+            <Button
+              onClick={() => handleStatusChange("Paused")}
+              theme={ThemeType.primary}
+            >
+              <FontAwesomeIcon icon={faPlay} />
+              Reopen
+            </Button>
+          )}
+          {props.data.status === "Active" && (
+            <Button
+              onClick={() => handleStatusChange("Paused")}
+              theme={ThemeType.warning}
+            >
+              <FontAwesomeIcon icon={faPause} />
+              Pause
+            </Button>
+          )}
+          {props.data.status === "Active" && (
+            <Button
+              onClick={() => handleStatusChange("Closed")}
+              theme={ThemeType.danger}
+            >
+              <FontAwesomeIcon icon={faStop} />
+              Close
+            </Button>
+          )}
+      </div>
+      <div className="list-item-icon-buttons">
+      <IconButton
           circle
           onClick={() => handleEditAssessmentDetail(props.data._id || "")}
+          variant={ButtonVariantType.outline}
+        >
+          <FontAwesomeIcon icon={faEye} />
+        </IconButton>
+        <IconButton
+          circle
+          onClick={() => props.handleEditAssessment(props.data._id || "",props.data)}
           variant={ButtonVariantType.outline}
         >
           <FontAwesomeIcon icon={faPen} />
@@ -64,6 +126,7 @@ const ListItem = (props: Props) => {
         >
           <FontAwesomeIcon icon={faChartSimple} />
         </IconButton>
+        </div>
       </div>
     </div>
   );
