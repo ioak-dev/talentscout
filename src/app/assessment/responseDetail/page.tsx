@@ -69,41 +69,26 @@ const responseDetail = () => {
           {responseDetail.length > 0 ? (
             responseDetail.map((item: any, index: number) => (
               <div
+                key={index}
                 className={`response ${item.question.data.answer === item.answer ? "correct" : "incorrect"}`}
               >
                 <div className="response_header">
                   {/* {item.answer === item.question.data.answer && (
-                  <div className="response_icon check">
-                    <FontAwesomeIcon icon={faSquareCheck}></FontAwesomeIcon>
-                  </div>
-                )}
-                {item.answer !== item.question.data.answer && (
-                  <div className="response_icon cross">
-                    <FontAwesomeIcon icon={faSquareXmark}></FontAwesomeIcon>
-                  </div>
-                )} */}
+            <div className="response_icon check">
+              <FontAwesomeIcon icon={faSquareCheck}></FontAwesomeIcon>
+            </div>
+          )}
+          {item.answer !== item.question.data.answer && (
+            <div className="response_icon cross">
+              <FontAwesomeIcon icon={faSquareXmark}></FontAwesomeIcon>
+            </div>
+          )} */}
                 </div>
                 <div className="response_question">
-                  <p>
+                  <pre>
                     {index + 1}.{item.question.data.question}{" "}
-                  </p>
+                  </pre>
                 </div>
-
-                {/* {item.question.data.choices.map((choice: any) => (
-                <div
-                  className="objective-question__choices__choice"
-                  key={index}
-                >
-                  <Radio
-                    value={choice}
-                    label={choice}
-                    checked={choice === item.answer}
-                  />
-                  {item.answer === item.question.data.answer && (
-                    <FontAwesomeIcon icon={faCheck}></FontAwesomeIcon>
-                  )}
-                </div>
-              ))} */}
                 <div className={`response_correct_answer`}>
                   <h6>Expected answer</h6> : {item.question.data.answer}
                 </div>
