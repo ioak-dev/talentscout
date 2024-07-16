@@ -1,0 +1,41 @@
+.page {
+  /* padding: 0px 12px; */
+  margin: 0 auto;
+  padding-top: 42px;
+  margin-bottom: 42px;
+  max-width: 1180px;
+  width: 90%;
+}
+
+.basicui-table {
+  background-color: var(--theme-white-100);
+  color: var(--theme-white-100i);
+}
+
+.response-table thead {
+  background-color: var(--theme-adaptive-600);
+}
+
+.basicui-dark .basicui-table {
+  background-color: var(--theme-black-extended-900);
+  color: var(--theme-black-extended-900i);
+}
+
+.basicui-table thead tr th {
+  border-bottom: 0px;
+}
+
+.basicui-table tbody tr td {
+  border-top: 0px;
+  border-bottom: 1px solid var(--theme-adaptive-600);
+  height: 50px;
+  vertical-align: top;
+}
+
+.basicui-table tbody tr {
+  cursor: pointer;
+}
+
+.basicui-table tbody tr td pre {
+  margin: 0;
+}

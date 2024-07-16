@@ -208,10 +208,11 @@ export const changeAssessmentStatus = (
 export const generateQuestionsUsingAi = (
   id: string,
   text: string,
+  noOfQuestions:number,
   authorization?: any
 ) => {
   return httpPost(
-    `/assessment/${id}/generate-questions/2`,
+    `/assessment/${id}/generate-questions/${noOfQuestions}`,
     { text },
     {
       headers: {

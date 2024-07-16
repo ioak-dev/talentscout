@@ -56,6 +56,10 @@ const ListItem = (props: Props) => {
     });
   };
 
+  const viewResponses = (id:any) =>{
+    router.push(`/assessment/response?assessmentId=${id}`);
+  }
+
   return (
     <div className="list-item assessment-list-item">
       <div className="list-item-main">
@@ -77,7 +81,8 @@ const ListItem = (props: Props) => {
         <div className="assessment-list-item__responses">0 responses</div>
       </div>
       <div className="list-item-actions">
-        <div className="list-item-status-buttons">
+        <div/>
+        {/* <div className="list-item-status-buttons">
           {["Draft", "Paused"].includes(props.data.status || "") && (
             <IconButton
               onClick={() => handleStatusChange("Active")}
@@ -114,7 +119,7 @@ const ListItem = (props: Props) => {
               <FontAwesomeIcon icon={faStop} />
             </IconButton>
           )}
-        </div>
+        </div> */}
         <div className="list-item-icon-buttons">
           <IconButton
             circle
@@ -134,7 +139,7 @@ const ListItem = (props: Props) => {
           </IconButton>
           <IconButton
             circle
-            onClick={() => handleEditAssessmentDetail(props.data._id || "")}
+            onClick={() => viewResponses(props.data._id || "")}
             variant={ButtonVariantType.outline}
           >
             <FontAwesomeIcon icon={faChartSimple} />

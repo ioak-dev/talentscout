@@ -18,6 +18,7 @@ import {
   Tabs,
   Textarea,
   ThemeType,
+  Select,
 } from "basicui";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useLayoutEffect, useState } from "react";
@@ -98,8 +99,15 @@ const AssessmentPage = () => {
   });
   const [isLoad, setIsLoad] = useState(false);
   const [generateQuestionDescription, setGenerateQuestionDescription] =
-  useState('');
-  const [numberOfQuestion,setNumberOfQuestion]=useState(10);
+    useState("");
+  const [numberOfQuestion, setNumberOfQuestion] = useState(10);
+  const [dropDownValues, setDropDownValues] = useState([
+    { name: "5", value: "5" },
+    { name: "10", value: "10" },
+    { name: "15", value: "15" },
+    { name: "20", value: "20" },
+  ]);
+  const [generateQuestionType, setGenerateQuestionType] = useState("");
 
   useEffect(() => {
     AuthorizationState.subscribe((message) => {
@@ -165,7 +173,7 @@ const AssessmentPage = () => {
       getAssessmentById(authorization, searchParams.get("id") || "").then(
         (response) => {
           setAssessmentData(response);
-          setGenerateQuestionDescription(response.jobDescription)
+          setGenerateQuestionDescription(response.jobDescription);
         }
       );
     }
@@ -182,13 +190,14 @@ const AssessmentPage = () => {
   };
 
   const handleAddNewDialogStateChange = (event: any) => {
+    setGenerateQuestionType("New Question");
     setAddNewDialogState({
       isOpen: true,
       assessmentQuestion: {
         ...BLANK_ASSESSMENT_QUESTION,
         assessmentId: assessmentData._id || "",
       },
-      ...event 
+      ...event,
     });
     // setAddNewDialogState({ ...addNewDialogState, ...event });
   };
@@ -302,33 +311,41 @@ const AssessmentPage = () => {
   };
 
   const handleGenerateUsingAi = () => {
+    setIsLoad(true);
+    setAddNewDialogState({
+      isOpen: false,
+    });
     const text = generateQuestionDescription;
     generateQuestionsUsingAi(
       assessmentData._id || "",
       text,
+      numberOfQuestion,
       authorization
     ).then((response) => {
-      console.log(response);
-      setAddNewDialogState({
-        isOpen: false,
-      });
+      setIsLoad(false);
+      fetchAssessmentQuestions();
     });
   };
 
-  const handleDescriptionChange = (event:any) =>{
-    setGenerateQuestionDescription(event.target.value)
+  const handleDescriptionChange = (event: any) => {
+    setGenerateQuestionDescription(event.target.value);
+  };
+
+  const handleNumberOfQuestionChange = (event: any) => {
+    setNumberOfQuestion(event.target.value);
+  };
+
+  const handleNumberOfQuestionDropDownChange = (event:any) => {
+    setNumberOfQuestion(event.currentTarget.value);
   }
 
-  const handleNumberOfQuestionChange = (event:any) => {
-    setNumberOfQuestion(event.target.value)
-  }
-
-  const openAiQuestionModal =(event:any) =>{
+  const openAiQuestionModal = (event: any) => {
+    setGenerateQuestionType("Generate AI Question");
     setAddNewDialogState({
       isOpen: true,
-      ...event
+      ...event,
     });
-  }
+  };
 
   if (!isRouteAuthorized) {
     return <></>;
@@ -339,15 +356,17 @@ const AssessmentPage = () => {
       <div>
         <ContextBar title={assessmentData.name}>
           {["Draft", "Paused"].includes(assessmentData.status || "") && (
-            <Button onClick={() =>
-              handleAddNewDialogStateChange({ type: "manual" })
-            }>
+            <Button
+              onClick={() => handleAddNewDialogStateChange({ type: "manual" })}
+            >
               <FontAwesomeIcon icon={faPlus} />
               Question
             </Button>
           )}
           {["Draft", "Paused"].includes(assessmentData.status || "") && (
-            <Button onClick={() =>openAiQuestionModal({ type: "Ai-New-Question" })} >
+            <Button
+              onClick={() => openAiQuestionModal({ type: "Ai-New-Question" })}
+            >
               <FontAwesomeIcon icon={faWandMagic} />
               Generate using AI
             </Button>
@@ -429,7 +448,7 @@ const AssessmentPage = () => {
       >
         <ModalHeader
           onClose={closeAddNewQuestionDialog}
-          heading="New question"
+          heading={generateQuestionType}
         />
         <ModalBody>
           <div className="assessment-questions-newdialog">
@@ -523,14 +542,21 @@ const AssessmentPage = () => {
                   </div>
                 </div>
               )}
-              {addNewDialogState.type && 
+            {addNewDialogState.type &&
               ["Ai-New-Question"].includes(addNewDialogState.type) && (
                 <div className="ai-question-generate">
-                  <Input 
-                    type="number"  
+                  <Input
+                    type="number"
                     value={numberOfQuestion}
                     label="Number of questions"
-                    onInput={handleNumberOfQuestionChange}/>
+                    onInput={handleNumberOfQuestionChange}
+                  />
+                  <Select
+                    value={dropDownValues}
+                    label="Number of questions"
+                    onInput={handleNumberOfQuestionDropDownChange}
+                    options={dropDownValues}
+                  />
                   <Textarea
                     name="Generate based on"
                     label="Generate based on"
@@ -559,14 +585,14 @@ const AssessmentPage = () => {
             )} */}
             </ModalFooter>
           )}
-          {addNewDialogState.type &&
+        {addNewDialogState.type &&
           ["Ai-New-Question"].includes(addNewDialogState.type) && (
             <ModalFooter>
               {/* {addNewDialogState.type === "manual" && (
               <> */}
               <Button theme={ThemeType.primary} onClick={handleGenerateUsingAi}>
-                <FontAwesomeIcon icon={faCheck} />
-                Save
+                <FontAwesomeIcon icon={faWandMagicSparkles} />
+                Generate
               </Button>
               <IconButton onClick={closeAddNewQuestionDialog}>
                 <FontAwesomeIcon icon={faClose} />
