@@ -1,5 +1,5 @@
 main {
-  margin-top: 42px;
+  margin-top: calc(42px);
   min-height: calc(100vh - 42px);
 }
 
@@ -98,4 +98,10 @@ main {
   grid-auto-flow: column;
   column-gap: 6px;
   justify-content: flex-end;
+}
+
+.page-container {
+  width: 1120px;
+  max-width: 90vw;
+  margin: auto;
 }
