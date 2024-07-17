@@ -17,6 +17,9 @@ interface Props {}
 
 const appRealm = process.env.NEXT_PUBLIC_AUTHLITE_REALM_ID || "";
 const environment: any = process.env.NEXT_PUBLIC_ENVIRONMENT || "local";
+const authliteApiKey: any =
+  process.env.NEXT_PUBLIC_AUTHLITE_API_KEY ||
+  "fc2076f5-bee6-4b94-974f-5e110495b048";
 
 const LoginPage = (props: Props) => {
   const router = useRouter();
@@ -69,7 +72,7 @@ const LoginPage = (props: Props) => {
       environment,
       appRealm,
       data,
-      "fc2076f5-bee6-4b94-974f-5e110495b048"
+      authliteApiKey
     ).then((response: AuthliteTypes.SignupResponse) => {
       if (response.outcome === "SUCCESS") {
         setView(AuthliteTypes.PageView.placeholder);
