@@ -7,7 +7,7 @@ import { faSort } from "@fortawesome/free-solid-svg-icons";
 import { Button, ButtonVariantType, IconButton } from "basicui";
 import "./response.css";
 
-const response = () => {
+const ResponsePage = () => {
   const searchParams = useSearchParams();
   const assessmentId = searchParams.get("assessmentId");
   const router = useRouter();
@@ -86,4 +86,4 @@ const response = () => {
   );
 };
 
-export default response;
+export default ResponsePage;

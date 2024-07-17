@@ -16,7 +16,7 @@ import {
   faClose,
 } from "@fortawesome/free-solid-svg-icons";
 
-const responseDetail = () => {
+const ResponseDetail = () => {
   const searchParams = useSearchParams();
   const assessmentId = searchParams.get("assessmentId");
   const responseId = searchParams.get("responseId");
@@ -118,4 +118,4 @@ const responseDetail = () => {
   );
 };
 
-export default responseDetail;
+export default ResponseDetail;
