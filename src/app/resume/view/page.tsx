@@ -148,8 +148,11 @@ export default function ViewResume() {
                   {resumeData.data.keyQuestionsToBeAsked &&
                     resumeData.data.keyQuestionsToBeAsked?.technical &&
                     resumeData.data.keyQuestionsToBeAsked.technical.map(
-                      (item: string) => (
-                        <div className="view-resume__questions__item">
+                      (item: string, index: number) => (
+                        <div
+                          key={index}
+                          className="view-resume__questions__item"
+                        >
                           {item}
                         </div>
                       )
@@ -163,8 +166,10 @@ export default function ViewResume() {
                       resumeData.data.keyQuestionsToBeAsked?.resume ||
                       resumeData.data.keyQuestionsToBeAsked?.overallResume ||
                       resumeData.data.keyQuestionsToBeAsked?.overall
-                    ).map((item: string) => (
-                      <div className="view-resume__questions__item">{item}</div>
+                    ).map((item: string, index: number) => (
+                      <div key={index} className="view-resume__questions__item">
+                        {item}
+                      </div>
                     ))}
                 </div>
               </div>
