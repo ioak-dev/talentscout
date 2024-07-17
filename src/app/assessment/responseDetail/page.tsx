@@ -53,11 +53,11 @@ const responseDetail = () => {
           " " +
           userDetail.familyName +
           " " +
-          "( " +
+          "(" +
           userDetail.score +
           "/" +
           userDetail.totalQuestions +
-          " )"
+          ")"
         }
       >
         <Button onClick={() => closeResponseDetail()}>
@@ -93,14 +93,8 @@ const responseDetail = () => {
           )}
         </div> */}
         <table
-        className={`basicui-table theme-default table-hover response-table`}
+        className={`basicui-table theme-default table-hover`}
       >
-        <thead>
-          <tr>
-            <th>Question</th>
-            <th>Correct/Incorrect</th>
-          </tr>
-        </thead>
         <tbody>
           {responseDetail.map((item: any, index: number) => {
             return (
@@ -108,7 +102,7 @@ const responseDetail = () => {
                 key={index}
                 tabIndex={0}
               >
-                <td><pre>{index + 1}.{item.question.data.question}</pre></td>
+                <td className="response-detail__question"><pre>{index + 1}. {item.question.data.question}</pre></td>
                 {item.question.data.answer === item.answer && 
                 <td><FontAwesomeIcon icon={faCheck}></FontAwesomeIcon></td>}
                 {item.question.data.answer !== item.answer && 
