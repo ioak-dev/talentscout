@@ -25,7 +25,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 interface Props {
-  question: { question: string; answer: string; choices: string[] };
+  question: any;
   index: number;
   onChange: any;
   onDelete: any;
@@ -94,7 +94,7 @@ const ObjectiveQuestion = (props: Props) => {
         <pre>{props.index + 1}. {props.question?.question}</pre>
         </div>
         <div className="objective-question__choices">
-          {props.question?.choices.map((item) => (
+          {props.question?.choices.map((item:any) => (
             <Radio
               disabled
               key={item}

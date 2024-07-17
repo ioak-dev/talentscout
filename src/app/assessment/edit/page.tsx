@@ -64,8 +64,8 @@ const sampleData = require("./data.json");
 
 const BLANK_ASSESSMENT_QUESTION: AssessmentQuestion = {
   data: {
-    question: "",
-    answer: " ",
+    question: "" ?? undefined,
+    answer: "" ?? undefined,
     choices: ["", "", "", ""],
   },
   assessmentId: "",
@@ -110,7 +110,7 @@ const AssessmentPage = () => {
   const [generateQuestionType, setGenerateQuestionType] = useState("");
 
   useEffect(() => {
-    AuthorizationState.subscribe((message) => {
+    AuthorizationState.subscribe((message:any) => {
       setAuthorization(message);
     });
   }, []);
@@ -128,7 +128,7 @@ const AssessmentPage = () => {
       assessmentData?._id || "",
       event,
       authorization
-    ).then((response) => {
+    ).then((response:any) => {
       fetchAssessmentQuestions();
     });
   };
@@ -138,7 +138,7 @@ const AssessmentPage = () => {
       assessmentData?._id || "",
       event,
       authorization
-    ).then((response) => {
+    ).then((response:any) => {
       fetchAssessmentQuestions();
     });
   };
@@ -147,7 +147,7 @@ const AssessmentPage = () => {
     setIsLoad(true);
     setIsEditAssessmentDialogOpen(false);
     saveAssessmentById(assessmentData?._id || "", data, authorization).then(
-      (response) => {
+      (response:any) => {
         fetchAssessmentById();
         fetchAssessmentQuestions();
         setIsLoad(false);
@@ -156,7 +156,7 @@ const AssessmentPage = () => {
   };
 
   const handleDeleteAssessment = () => {
-    deleteAssessmentById(assessmentData?._id || "").then((response) => {
+    deleteAssessmentById(assessmentData?._id || "").then((response:any) => {
       router.back();
     });
   };
@@ -171,7 +171,7 @@ const AssessmentPage = () => {
   const fetchAssessmentById = () => {
     if (authorization.isAuth) {
       getAssessmentById(authorization, searchParams.get("id") || "").then(
-        (response) => {
+        (response:any) => {
           setAssessmentData(response);
           setGenerateQuestionDescription(response.jobDescription);
         }
@@ -182,7 +182,7 @@ const AssessmentPage = () => {
   const fetchAssessmentQuestions = () => {
     if (authorization.isAuth) {
       getAssessmentQuestions(authorization, searchParams.get("id") || "").then(
-        (response) => {
+        (response:any) => {
           setAssessmentQuestionsData(response);
         }
       );
@@ -224,7 +224,7 @@ const AssessmentPage = () => {
 
   const handleGenerateNewQuestion = () => {
     generateNewAssessmentQuestion(assessmentData._id || "", authorization).then(
-      (response) => {
+      (response:any) => {
         setAddNewDialogState({
           ...addNewDialogState,
           assessmentQuestion: { ...response },
@@ -242,7 +242,10 @@ const AssessmentPage = () => {
       ...addNewDialogState,
       assessmentQuestion: {
         ...addNewDialogState.assessmentQuestion,
-        data: { ...addNewDialogState.assessmentQuestion?.data, choices },
+        data: { 
+          ...addNewDialogState.assessmentQuestion?.data, 
+          choices, 
+        },
       },
     });
   };
@@ -276,7 +279,7 @@ const AssessmentPage = () => {
         assessmentData._id || "",
         addNewDialogState.assessmentQuestion,
         authorization
-      ).then((response) => {
+      ).then((response:any) => {
         fetchAssessmentQuestions();
         setAddNewDialogState({
           isOpen: false,
@@ -286,9 +289,9 @@ const AssessmentPage = () => {
     } else {
       createNewQuestion(
         assessmentData._id || "",
-        addNewDialogState?.assessmentQuestion,
+        addNewDialogState?.assessmentQuestion || BLANK_ASSESSMENT_QUESTION,
         authorization
-      ).then((response) => {
+      ).then((response:any) => {
         fetchAssessmentQuestions();
         setAddNewDialogState({
           isOpen: false,
@@ -305,7 +308,7 @@ const AssessmentPage = () => {
       assessmentData._id || "",
       status,
       authorization
-    ).then((response) => {
+    ).then((response:any) => {
       fetchAssessmentById();
     });
   };
@@ -321,7 +324,7 @@ const AssessmentPage = () => {
       text,
       numberOfQuestion,
       authorization
-    ).then((response) => {
+    ).then((response:any) => {
       setIsLoad(false);
       fetchAssessmentQuestions();
     });
@@ -514,7 +517,8 @@ const AssessmentPage = () => {
                     autoFocus
                   />
                   <div className="objective-question__choices">
-                    {addNewDialogState.assessmentQuestion?.data?.choices.map(
+                    {addNewDialogState?.assessmentQuestion?.data?.choices && 
+                    addNewDialogState?.assessmentQuestion?.data?.choices.map(
                       (item, index: number) => (
                         <div
                           className="objective-question__choices__choice"
