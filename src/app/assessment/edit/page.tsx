@@ -252,7 +252,7 @@ const AssessmentPage = () => {
       ...addNewDialogState,
       assessmentQuestion: {
         ...addNewDialogState.assessmentQuestion,
-        data: { ...addNewDialogState.assessmentQuestion.data, answer },
+        data: { ...addNewDialogState.assessmentQuestion?.data, answer },
       },
     });
   };
@@ -263,7 +263,7 @@ const AssessmentPage = () => {
       assessmentQuestion: {
         ...addNewDialogState.assessmentQuestion,
         data: {
-          ...addNewDialogState.assessmentQuestion.data,
+          ...addNewDialogState.assessmentQuestion?.data,
           question: event.target.value,
         },
       },
