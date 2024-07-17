@@ -236,13 +236,13 @@ const AssessmentPage = () => {
   };
 
   const handleChoiceTextChange = (event: any, index: number) => {
-    const choices = [...addNewDialogState.assessmentQuestion.data.choices];
+    const choices = addNewDialogState.assessmentQuestion?.data?.choices ? [...addNewDialogState.assessmentQuestion?.data?.choices] : [];
     choices[index] = event.currentTarget.value;
     setAddNewDialogState({
       ...addNewDialogState,
       assessmentQuestion: {
         ...addNewDialogState.assessmentQuestion,
-        data: { ...addNewDialogState.assessmentQuestion.data, choices },
+        data: { ...addNewDialogState.assessmentQuestion?.data, choices },
       },
     });
   };
@@ -271,7 +271,7 @@ const AssessmentPage = () => {
   };
 
   const handleSaveNewQuestion = () => {
-    if (addNewDialogState.assessmentQuestion._id) {
+    if (addNewDialogState?.assessmentQuestion?._id) {
       saveAssessmentQuestionById(
         assessmentData._id || "",
         addNewDialogState.assessmentQuestion,
@@ -286,7 +286,7 @@ const AssessmentPage = () => {
     } else {
       createNewQuestion(
         assessmentData._id || "",
-        addNewDialogState.assessmentQuestion,
+        addNewDialogState?.assessmentQuestion,
         authorization
       ).then((response) => {
         fetchAssessmentQuestions();
@@ -523,7 +523,7 @@ const AssessmentPage = () => {
                           <Radio
                             checked={
                               item ===
-                              addNewDialogState.assessmentQuestion.data?.answer
+                              addNewDialogState.assessmentQuestion?.data?.answer
                             }
                             value={item}
                             onChange={() => handleChoiceChange(item, index)}
