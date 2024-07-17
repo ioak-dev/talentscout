@@ -4,9 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "NODE_ENV=production next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "deploy": "pm2 start npm --name 'contacts' -- start -- --port=7002"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.5.2",
