@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ContextBar from "@/components/ContextBar";
 import {
   faCheck,
+  faTimes,
   faCircleCheck,
   faCircleXmark,
   faSquareCheck,
@@ -65,7 +66,7 @@ const responseDetail = () => {
         </Button>
       </ContextBar>
       <div className="page">
-        <div className="response_container">
+        {/* <div className="response_container">
           {responseDetail.length > 0 ? (
             responseDetail.map((item: any, index: number) => (
               <div
@@ -73,16 +74,6 @@ const responseDetail = () => {
                 className={`response ${item.question.data.answer === item.answer ? "correct" : "incorrect"}`}
               >
                 <div className="response_header">
-                  {/* {item.answer === item.question.data.answer && (
-            <div className="response_icon check">
-              <FontAwesomeIcon icon={faSquareCheck}></FontAwesomeIcon>
-            </div>
-          )}
-          {item.answer !== item.question.data.answer && (
-            <div className="response_icon cross">
-              <FontAwesomeIcon icon={faSquareXmark}></FontAwesomeIcon>
-            </div>
-          )} */}
                 </div>
                 <div className="response_question">
                   <pre>
@@ -100,7 +91,34 @@ const responseDetail = () => {
           ) : (
             <p>Loading...</p>
           )}
-        </div>
+        </div> */}
+        <table
+        className={`basicui-table theme-default table-hover response-table`}
+      >
+        <thead>
+          <tr>
+            <th>Question</th>
+            <th>Correct/Incorrect</th>
+          </tr>
+        </thead>
+        <tbody>
+          {responseDetail.map((item: any, index: number) => {
+            return (
+              <tr
+                key={index}
+                tabIndex={0}
+              >
+                <td><pre>{index + 1}.{item.question.data.question}</pre></td>
+                {item.question.data.answer === item.answer && 
+                <td><FontAwesomeIcon icon={faCheck}></FontAwesomeIcon></td>}
+                {item.question.data.answer !== item.answer && 
+                <td><FontAwesomeIcon icon={faTimes}></FontAwesomeIcon></td>}
+                
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
       </div>
     </div>
   );

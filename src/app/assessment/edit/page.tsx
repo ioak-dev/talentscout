@@ -545,14 +545,14 @@ const AssessmentPage = () => {
             {addNewDialogState.type &&
               ["Ai-New-Question"].includes(addNewDialogState.type) && (
                 <div className="ai-question-generate">
-                  <Input
+                  {/* <Input
                     type="number"
                     value={numberOfQuestion}
                     label="Number of questions"
                     onInput={handleNumberOfQuestionChange}
-                  />
+                  /> */}
                   <Select
-                    value={dropDownValues}
+                    value={[numberOfQuestion]}
                     label="Number of questions"
                     onInput={handleNumberOfQuestionDropDownChange}
                     options={dropDownValues}

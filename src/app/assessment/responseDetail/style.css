@@ -71,3 +71,39 @@
 .response_user_answer {
   margin-bottom: 10px;
 }
+
+.basicui-table {
+  background-color: var(--theme-white-100);
+  color: var(--theme-white-100i);
+}
+
+.response-table thead {
+  background-color: var(--theme-adaptive-600);
+}
+
+.basicui-dark .basicui-table {
+  background-color: var(--theme-black-extended-900);
+  color: var(--theme-black-extended-900i);
+}
+
+.basicui-table thead tr th {
+  border-bottom: 0px;
+}
+
+.basicui-table tbody tr td {
+  border-top: 0px;
+  border-bottom: 1px solid var(--theme-adaptive-600);
+  height: 50px;
+  vertical-align: top;
+}
+
+/* 
+
+.basicui-table tbody tr td pre {
+  margin: 0;
+} */
+
+pre {
+  word-break: break-word;
+  white-space: break-spaces;
+}

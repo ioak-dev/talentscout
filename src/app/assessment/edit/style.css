@@ -19,8 +19,9 @@
   height: 240px;
 }
 
-.assessment-questions-newdialog {
-    
+.assessment-questions pre {
+  word-break: break-word;
+  white-space: break-spaces;
 }
 
 .assessment-questions-newdialog__type {
