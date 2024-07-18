@@ -102,6 +102,7 @@ const AssessmentPage = () => {
     useState("");
   const [numberOfQuestion, setNumberOfQuestion] = useState(10);
   const [dropDownValues, setDropDownValues] = useState([
+    { name: "1", value: "1" },
     { name: "5", value: "5" },
     { name: "10", value: "10" },
     { name: "15", value: "15" },
