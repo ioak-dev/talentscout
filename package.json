@@ -7,7 +7,7 @@
     "build": "cross-env NODE_ENV=production next build",
     "start": "next start",
     "lint": "next lint",
-    "deploy": "pm2 start npm --name 'contacts' -- start -- --port=7002"
+    "deploy": "pm2 start npm --name 'talentprobe-console' -- start -- --port=7002"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.5.2",

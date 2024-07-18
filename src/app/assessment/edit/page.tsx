@@ -110,7 +110,7 @@ const AssessmentPage = () => {
   const [generateQuestionType, setGenerateQuestionType] = useState("");
 
   useEffect(() => {
-    AuthorizationState.subscribe((message:any) => {
+    AuthorizationState.subscribe((message: any) => {
       setAuthorization(message);
     });
   }, []);
@@ -128,7 +128,7 @@ const AssessmentPage = () => {
       assessmentData?._id || "",
       event,
       authorization
-    ).then((response:any) => {
+    ).then((response: any) => {
       fetchAssessmentQuestions();
     });
   };
@@ -138,7 +138,7 @@ const AssessmentPage = () => {
       assessmentData?._id || "",
       event,
       authorization
-    ).then((response:any) => {
+    ).then((response: any) => {
       fetchAssessmentQuestions();
     });
   };
@@ -147,7 +147,7 @@ const AssessmentPage = () => {
     setIsLoad(true);
     setIsEditAssessmentDialogOpen(false);
     saveAssessmentById(assessmentData?._id || "", data, authorization).then(
-      (response:any) => {
+      (response: any) => {
         fetchAssessmentById();
         fetchAssessmentQuestions();
         setIsLoad(false);
@@ -156,7 +156,7 @@ const AssessmentPage = () => {
   };
 
   const handleDeleteAssessment = () => {
-    deleteAssessmentById(assessmentData?._id || "").then((response:any) => {
+    deleteAssessmentById(assessmentData?._id || "").then((response: any) => {
       router.back();
     });
   };
@@ -171,7 +171,7 @@ const AssessmentPage = () => {
   const fetchAssessmentById = () => {
     if (authorization.isAuth) {
       getAssessmentById(authorization, searchParams.get("id") || "").then(
-        (response:any) => {
+        (response: any) => {
           setAssessmentData(response);
           setGenerateQuestionDescription(response.jobDescription);
         }
@@ -182,7 +182,7 @@ const AssessmentPage = () => {
   const fetchAssessmentQuestions = () => {
     if (authorization.isAuth) {
       getAssessmentQuestions(authorization, searchParams.get("id") || "").then(
-        (response:any) => {
+        (response: any) => {
           setAssessmentQuestionsData(response);
         }
       );
@@ -224,7 +224,7 @@ const AssessmentPage = () => {
 
   const handleGenerateNewQuestion = () => {
     generateNewAssessmentQuestion(assessmentData._id || "", authorization).then(
-      (response:any) => {
+      (response: any) => {
         setAddNewDialogState({
           ...addNewDialogState,
           assessmentQuestion: { ...response },
@@ -236,15 +236,17 @@ const AssessmentPage = () => {
   };
 
   const handleChoiceTextChange = (event: any, index: number) => {
-    const choices = addNewDialogState.assessmentQuestion?.data?.choices ? [...addNewDialogState.assessmentQuestion?.data?.choices] : [];
+    const choices = addNewDialogState.assessmentQuestion?.data?.choices
+      ? [...addNewDialogState.assessmentQuestion?.data?.choices]
+      : [];
     choices[index] = event.currentTarget.value;
     setAddNewDialogState({
       ...addNewDialogState,
       assessmentQuestion: {
         ...addNewDialogState.assessmentQuestion,
-        data: { 
-          ...addNewDialogState.assessmentQuestion?.data, 
-          choices, 
+        data: {
+          ...addNewDialogState.assessmentQuestion?.data,
+          choices,
         },
       },
     });
@@ -279,7 +281,7 @@ const AssessmentPage = () => {
         assessmentData._id || "",
         addNewDialogState.assessmentQuestion,
         authorization
-      ).then((response:any) => {
+      ).then((response: any) => {
         fetchAssessmentQuestions();
         setAddNewDialogState({
           isOpen: false,
@@ -291,7 +293,7 @@ const AssessmentPage = () => {
         assessmentData._id || "",
         addNewDialogState?.assessmentQuestion || BLANK_ASSESSMENT_QUESTION,
         authorization
-      ).then((response:any) => {
+      ).then((response: any) => {
         fetchAssessmentQuestions();
         setAddNewDialogState({
           isOpen: false,
@@ -308,7 +310,7 @@ const AssessmentPage = () => {
       assessmentData._id || "",
       status,
       authorization
-    ).then((response:any) => {
+    ).then((response: any) => {
       fetchAssessmentById();
     });
   };
@@ -324,7 +326,7 @@ const AssessmentPage = () => {
       text,
       numberOfQuestion,
       authorization
-    ).then((response:any) => {
+    ).then((response: any) => {
       setIsLoad(false);
       fetchAssessmentQuestions();
     });
@@ -338,9 +340,9 @@ const AssessmentPage = () => {
     setNumberOfQuestion(event.target.value);
   };
 
-  const handleNumberOfQuestionDropDownChange = (event:any) => {
+  const handleNumberOfQuestionDropDownChange = (event: any) => {
     setNumberOfQuestion(event.currentTarget.value);
-  }
+  };
 
   const openAiQuestionModal = (event: any) => {
     setGenerateQuestionType("Generate AI Question");
@@ -358,22 +360,18 @@ const AssessmentPage = () => {
     <>
       <div>
         <ContextBar title={assessmentData.name}>
-          {["Draft", "Paused"].includes(assessmentData.status || "") && (
-            <Button
-              onClick={() => handleAddNewDialogStateChange({ type: "manual" })}
-            >
-              <FontAwesomeIcon icon={faPlus} />
-              Question
-            </Button>
-          )}
-          {["Draft", "Paused"].includes(assessmentData.status || "") && (
-            <Button
-              onClick={() => openAiQuestionModal({ type: "Ai-New-Question" })}
-            >
-              <FontAwesomeIcon icon={faWandMagic} />
-              Generate using AI
-            </Button>
-          )}
+          <Button
+            onClick={() => handleAddNewDialogStateChange({ type: "manual" })}
+          >
+            <FontAwesomeIcon icon={faPlus} />
+            Question
+          </Button>
+          <Button
+            onClick={() => openAiQuestionModal({ type: "Ai-New-Question" })}
+          >
+            <FontAwesomeIcon icon={faWandMagic} />
+            Generate using AI
+          </Button>
           {/* {["Draft", "Paused"].includes(assessmentData.status || "") && (
             <Button onClick={() => setIsEditAssessmentDialogOpen(true)}>
               <FontAwesomeIcon icon={faPen} />
@@ -517,32 +515,33 @@ const AssessmentPage = () => {
                     autoFocus
                   />
                   <div className="objective-question__choices">
-                    {addNewDialogState?.assessmentQuestion?.data?.choices && 
-                    addNewDialogState?.assessmentQuestion?.data?.choices.map(
-                      (item, index: number) => (
-                        <div
-                          className="objective-question__choices__choice"
-                          key={index}
-                        >
-                          <Radio
-                            checked={
-                              item ===
-                              addNewDialogState.assessmentQuestion?.data?.answer
-                            }
-                            value={item}
-                            onChange={() => handleChoiceChange(item, index)}
-                          />
-                          <Input
-                            value={item}
-                            name={`choice-${index + 1}`}
-                            placeholder={`Choice #${index + 1}`}
-                            onInput={(event: any) =>
-                              handleChoiceTextChange(event, index)
-                            }
-                          />
-                        </div>
-                      )
-                    )}
+                    {addNewDialogState?.assessmentQuestion?.data?.choices &&
+                      addNewDialogState?.assessmentQuestion?.data?.choices.map(
+                        (item, index: number) => (
+                          <div
+                            className="objective-question__choices__choice"
+                            key={index}
+                          >
+                            <Radio
+                              checked={
+                                item ===
+                                addNewDialogState.assessmentQuestion?.data
+                                  ?.answer
+                              }
+                              value={item}
+                              onChange={() => handleChoiceChange(item, index)}
+                            />
+                            <Input
+                              value={item}
+                              name={`choice-${index + 1}`}
+                              placeholder={`Choice #${index + 1}`}
+                              onInput={(event: any) =>
+                                handleChoiceTextChange(event, index)
+                              }
+                            />
+                          </div>
+                        )
+                      )}
                   </div>
                 </div>
               )}
