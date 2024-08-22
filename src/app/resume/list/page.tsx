@@ -61,7 +61,7 @@ export default function Resumes() {
     saveResume(newFileAttachment, authorization).then((response: any) => {
       // fetchResumes();
       setIsLoad(false);
-      router.push(`/resume/view?id=${response.id}`);
+      router.push(`/resume/view?id=${response._id}`);
     });
   };
 

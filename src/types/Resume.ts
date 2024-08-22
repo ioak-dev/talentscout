@@ -1,5 +1,5 @@
 export type Resume = {
-  id?: string;
+  _id?: string;
   lastModifiedBy?: string;
   lastModifiedDate?: string;
   createdBy?: string;

@@ -41,7 +41,7 @@ const ListItem = (props: Props) => {
       <div className="flat-list-item-actions">
         <IconButton
           circle
-          onClick={() => handleViewResumeDetail(props.data.id || "")}
+          onClick={() => handleViewResumeDetail(props.data._id || "")}
           variant={ButtonVariantType.outline}
         >
           <FontAwesomeIcon icon={faFolderOpen} />

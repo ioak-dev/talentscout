@@ -49,8 +49,8 @@ export default function ViewResume() {
 
   const fetchResumeById = () => {
     if (authorization.isAuth) {
-      getResumeById(authorization, searchParams.get("id") || "").then(
-        (response) => {
+      getResumeById(authorization, searchParams.get("id") || "")
+        .then((response: any) => {
           setResumeData(response);
         }
       );

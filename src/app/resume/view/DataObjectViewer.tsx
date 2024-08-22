@@ -30,7 +30,7 @@ const DataObjectViewer = (props: Props) => {
           <div key={groupName}>
             <div className="data-subheading">{groupName}</div>
             {typeof props.data[groupName] === "object" &&
-              props.data[groupName].map((item: string, index: number) => (
+              props.data[groupName]?.map((item: string, index: number) => (
                 <span key={item}>
                   {item}
                   {index !== props.data[groupName].length - 1 && <>, </>}{" "}
