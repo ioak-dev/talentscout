@@ -21,12 +21,14 @@ import { useRouter } from "next/navigation";
 import { AuthorizationState } from "@/store/AuthorizationStore";
 import { Authorization } from "@/types/Authorization";
 import Timer from "./Timer";
+import { useMsal } from '@azure/msal-react';
 
 const Navbar = () => {
   const [darkMode, setDarkMode] = useState(false);
   const [isLogoutDialogOpen, setIsLogoutDialogOpen] = useState(false);
   const [authorization, setAuthorization] = useState<Authorization>({});
   const router = useRouter();
+  const { instance } = useMsal();
 
   useEffect(() => {
     DarkModeState.subscribe((message) => {
@@ -50,6 +52,11 @@ const Navbar = () => {
     AuthorizationState.next({});
     router.push("/login");
     setIsLogoutDialogOpen(false);
+    handleLogout();
+  };
+
+  const handleLogout = () => {
+    instance.logoutRedirect();
   };
 
   return (

@@ -37,7 +37,15 @@ const useRouteAuthorization = (realm: string): OutputProps => {
     if (!isAuthenticated()) {
       const accessToken = getSessionValue(`talentprobe-access_token`);
       const refreshToken = getSessionValue(`talentprobe-refresh_token`);
-      if (accessToken && refreshToken) {
+      const microsoftToken = getSessionValue(`microsoft-access_token`);
+      if (microsoftToken) {
+        AuthorizationState.next({
+          isAuth: true,
+          access_token: microsoftToken,
+        });
+        setIsRouteAuthorized(true);
+      }
+      else if (accessToken && refreshToken) {
         httpPost(
           `/${appRealm}/user/auth/token`,
           { grant_type: "refresh_token", refresh_token: refreshToken },

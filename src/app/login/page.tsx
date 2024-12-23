@@ -12,7 +12,7 @@ import { setSessionValue } from "@/lib/SessionUtils";
 import { AuthorizationState } from "@/store/AuthorizationStore";
 import { Authorization } from "@/types/Authorization";
 import Logo from "@/components/Logo";
-
+import MicroSoftSignInButton from "@/components/MicroSoftSignInButton/index";
 interface Props {}
 
 const appRealm = process.env.NEXT_PUBLIC_AUTHLITE_REALM_ID || "";
@@ -118,7 +118,7 @@ const LoginPage = (props: Props) => {
   };
 
   return (
-    <AuthliteComponents.Login
+    <><AuthliteComponents.Login
       onSignin={onSignin}
       onSignup={onSignup}
       onForgotPassword={onForgotPassword}
@@ -205,6 +205,8 @@ const LoginPage = (props: Props) => {
         )}
       </AuthliteComponents.Placeholder>
     </AuthliteComponents.Login>
+    <MicroSoftSignInButton/>
+  </>
   );
 };
 

@@ -12,7 +12,9 @@ import { useInitialization } from "@/lib/InitializationHook";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import { config } from "@fortawesome/fontawesome-svg-core";
 config.autoAddCss = false;
-
+import { MsalProvider} from '@azure/msal-react';
+import { AuthProvider } from "../services/AuthProvider";
+import msalInstance from "../../msalConfig";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function RootLayout({
@@ -39,7 +41,9 @@ export default function RootLayout({
         }`}
       >
         <Navbar />
-        <main>{children}</main>
+       <MsalProvider instance={msalInstance}>
+      <AuthProvider><main>{children}</main></AuthProvider>
+    </MsalProvider>
       </body>
     </html>
   );

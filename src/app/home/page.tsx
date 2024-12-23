@@ -54,9 +54,9 @@ const HomePage = () => {
     }
   }, [authorization]);
 
-  if (!isRouteAuthorized) {
-    return <></>;
-  }
+  // if (!isRouteAuthorized) {
+  //   return <></>;
+  // }
 
   return (
     <>
