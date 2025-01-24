@@ -322,6 +322,7 @@ const AssessmentPage = () => {
       isOpen: false,
     });
     const text = generateQuestionDescription;
+    console.log(assessmentData)
     generateQuestionsUsingAi(
       assessmentData._id || "",
       text,

@@ -95,6 +95,13 @@ const EditAssessmentDialog = (props: Props) => {
             value={assessmentData?.jobDescription}
             onInput={handleAssessmentDataChange}
           />
+          <Input
+            label="Per question time (seconds)"
+            type="number"
+            name="duration"
+            value={assessmentData?.duration}
+            onInput={handleAssessmentDataChange}
+          />
         </form>
       </ModalBody>
       <ModalFooter>
