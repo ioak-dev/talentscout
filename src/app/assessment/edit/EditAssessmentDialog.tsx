@@ -23,6 +23,7 @@ import "./style.css";
 import { Assessment } from "@/types/Assessment";
 import {
   deleteAssessmentById,
+  fetchResponse,
   getAssessmentById,
   getAssessmentQuestions,
   saveAssessmentById,

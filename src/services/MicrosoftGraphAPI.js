@@ -52,7 +52,7 @@ const getUserProfilePicture = async (accessToken) => {
 
 export const getUserInfo = async (accessToken) => {
   try {
-    const response = await fetch(`http://localhost:8080/userinfo?accessToken=${accessToken}`, {
+    const response = await fetch(`http://localhost:4000/userinfo?accessToken=${accessToken}`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
