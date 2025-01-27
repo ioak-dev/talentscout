@@ -97,22 +97,22 @@ const ResponseDetail = () => {
             {responseDetail.map((item: any, index: number) => {
               return (
                 <tr key={index} tabIndex={0}>
+
+                <td>
+                  {item.isSubmitted && (
+                    <FontAwesomeIcon
+                      icon={
+                        item.question.data.answer === item.answer
+                          ? faCheck
+                          : faTimes
+                      }
+                    ></FontAwesomeIcon>
+                  )}
+                </td>
                   <td className="response-detail__question">
                     <pre>
                       {index + 1}. {item.question.data.question}
                     </pre>
-                  </td>
-
-                  <td>
-                    {item.isSubmitted && (
-                      <FontAwesomeIcon
-                        icon={
-                          item.question.data.answer === item.answer
-                            ? faCheck
-                            : faTimes
-                        }
-                      ></FontAwesomeIcon>
-                    )}
                   </td>
                 </tr>
               );
