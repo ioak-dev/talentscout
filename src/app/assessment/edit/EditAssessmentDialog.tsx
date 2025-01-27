@@ -23,6 +23,7 @@ import "./style.css";
 import { Assessment } from "@/types/Assessment";
 import {
   deleteAssessmentById,
+  fetchResponse,
   getAssessmentById,
   getAssessmentQuestions,
   saveAssessmentById,
@@ -93,6 +94,13 @@ const EditAssessmentDialog = (props: Props) => {
             name="jobDescription"
             autoFocus
             value={assessmentData?.jobDescription}
+            onInput={handleAssessmentDataChange}
+          />
+          <Input
+            label="Time duration for the questions (in seconds)"
+            name="duration"
+            type="number"
+            value={assessmentData?.duration}
             onInput={handleAssessmentDataChange}
           />
         </form>
