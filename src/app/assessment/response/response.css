@@ -39,3 +39,9 @@
 .basicui-table tbody tr td pre {
   margin: 0;
 }
+
+.download-icon{
+  display: flex;
+  justify-content: end;
+  padding: 10px 0px;
+}

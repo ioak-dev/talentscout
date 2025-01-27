@@ -3,15 +3,25 @@ import { useEffect, useLayoutEffect, useState } from "react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { getResponses } from "./responseService";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSort } from "@fortawesome/free-solid-svg-icons";
+import { faSort, faDownload } from "@fortawesome/free-solid-svg-icons";
 import { Button, ButtonVariantType, IconButton } from "basicui";
 import "./response.css";
+type AssessmentResponse = {
+  _id: string;
+  givenName: string;
+  familyName: string;
+  email: string;
+  updatedAt: string;
+  totalQuestions: number;
+  answered: number;
+  score: number;
+};
 
 const ResponsePage = () => {
   const searchParams = useSearchParams();
   const assessmentId = searchParams.get("assessmentId");
   const router = useRouter();
-  const [assessmentResponse, setAssessmentResponse] = useState([]);
+  const [assessmentResponse, setAssessmentResponse] = useState<AssessmentResponse[]>([]);
   useEffect(() => {
     viewResponse();
   }, []);
@@ -44,8 +54,40 @@ const ResponsePage = () => {
     setAssessmentResponse(sortedResponses);
   };
 
+  const downloadData = () => {
+    const csvContent = [
+      ["Name", "E-mail", "Test taken on", "Total Questions", "Answered", "Score","Percentage"],
+      ...assessmentResponse.map((item) => [
+        `${item.givenName} ${item.familyName}`,
+        item.email,
+        item.updatedAt,
+        item.totalQuestions,
+        item.answered,
+        item.score,
+        ((item.score / item.totalQuestions) * 100).toFixed(2)
+      ]),
+    ]
+      .map((row) => row.join(","))
+      .join("\n");
+
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+    link.setAttribute("href", url);
+    link.setAttribute("download", "assessment_responses.csv");
+    link.style.visibility = "hidden";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <div className="page">
+      <div className="download-icon">
+      <IconButton>
+        <FontAwesomeIcon onClick={downloadData} icon={faDownload} />
+        </IconButton>
+      </div>
       <table
         className={`basicui-table theme-default table-hover response-table`}
       >
