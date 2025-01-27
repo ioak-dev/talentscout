@@ -92,27 +92,33 @@ const ResponseDetail = () => {
             <p>Loading...</p>
           )}
         </div> */}
-        <table
-        className={`basicui-table theme-default table-hover`}
-      >
-        <tbody>
-          {responseDetail.map((item: any, index: number) => {
-            return (
-              <tr
-                key={index}
-                tabIndex={0}
-              >
-                <td className="response-detail__question"><pre>{index + 1}. {item.question.data.question}</pre></td>
-                {item.question.data.answer === item.answer && 
-                <td><FontAwesomeIcon icon={faCheck}></FontAwesomeIcon></td>}
-                {item.question.data.answer !== item.answer && 
-                <td><FontAwesomeIcon icon={faTimes}></FontAwesomeIcon></td>}
-                
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+        <table className={`basicui-table theme-default table-hover`}>
+          <tbody>
+            {responseDetail.map((item: any, index: number) => {
+              return (
+                <tr key={index} tabIndex={0}>
+                  <td className="response-detail__question">
+                    <pre>
+                      {index + 1}. {item.question.data.question}
+                    </pre>
+                  </td>
+
+                  <td>
+                    {item.isSubmitted && (
+                      <FontAwesomeIcon
+                        icon={
+                          item.question.data.answer === item.answer
+                            ? faCheck
+                            : faTimes
+                        }
+                      ></FontAwesomeIcon>
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
       </div>
     </div>
   );
