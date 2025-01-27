@@ -74,7 +74,7 @@ const Navbar = () => {
             </li> */}
             </ul>
             <div className="navbar_right">
-              <Timer />
+              {/* <Timer /> */}
               <div>
                 {darkMode && (
                   <IconButton

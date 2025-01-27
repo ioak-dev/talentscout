@@ -97,9 +97,9 @@ const EditAssessmentDialog = (props: Props) => {
             onInput={handleAssessmentDataChange}
           />
           <Input
-            label="Time duration for the questions (in seconds)"
-            name="duration"
+            label="Per question time (seconds)"
             type="number"
+            name="duration"
             value={assessmentData?.duration}
             onInput={handleAssessmentDataChange}
           />
