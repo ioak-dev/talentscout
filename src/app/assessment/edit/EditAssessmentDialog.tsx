@@ -21,18 +21,6 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useLayoutEffect, useState } from "react";
 import "./style.css";
 import { Assessment } from "@/types/Assessment";
-import {
-  deleteAssessmentById,
-  fetchResponse,
-  getAssessmentById,
-  getAssessmentQuestions,
-  saveAssessmentById,
-  saveAssessmentQuestions,
-} from "./service";
-import {
-  PermissionType,
-  useRouteAuthorization,
-} from "@/lib/RouteAuthorizationHook";
 import { Authorization } from "@/types/Authorization";
 import { AuthorizationState } from "@/store/AuthorizationStore";
 import { AssessmentQuestion } from "@/types/AssessmentQuestion";
