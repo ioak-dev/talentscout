@@ -45,3 +45,26 @@
   justify-content: end;
   padding: 10px 0px;
 }
+
+.warning-text {
+  color: orange;
+}
+.basicui-dark  .basicui-button--variant-outline.basicui-button--theme-danger{
+  color: #c51022;
+  border-color: #5b5e5f;
+}
+
+.basicui-dark .basicui-button--variant-outline.basicui-button--theme-danger:hover{
+  color: #c51022;
+  border-color: #c51022;
+}
+
+.basicui-button--variant-outline.basicui-button--theme-danger{
+  color: #c51022;
+  border-color: #e6e7e7;
+}
+
+.basicui-button--variant-outline.basicui-button--theme-danger:hover{
+  color: #c51022;
+  border-color: #c51022;
+}

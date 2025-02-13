@@ -39,3 +39,27 @@
   display: flex;
   gap: 5px;
 }
+
+.warning-text {
+  color: orange;
+}
+
+.basicui-dark  .basicui-button--variant-outline.basicui-button--theme-danger{
+  color: #c51022;
+  border-color: #5b5e5f;
+}
+
+.basicui-dark .basicui-button--variant-outline.basicui-button--theme-danger:hover{
+  color: #c51022;
+  border-color: #c51022;
+}
+
+.basicui-button--variant-outline.basicui-button--theme-danger{
+  color: #c51022;
+  border-color: white;
+}
+
+.basicui-button--variant-outline.basicui-button--theme-danger:hover{
+  color: #c51022;
+  border-color: #c51022;
+}

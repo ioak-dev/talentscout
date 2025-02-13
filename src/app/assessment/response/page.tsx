@@ -1,10 +1,19 @@
 "use client";
 import { useEffect, useLayoutEffect, useState } from "react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
-import { getResponses } from "./responseService";
+import { deleteAssessmentResponseById, getResponses } from "./responseService";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSort, faSpinner, faDownload } from "@fortawesome/free-solid-svg-icons";
-import { Button, ButtonVariantType, IconButton } from "basicui";
+import { faSort, faSpinner, faDownload,faTrash,faCheck,faClose } from "@fortawesome/free-solid-svg-icons";
+import {
+  Button,
+  IconButton,
+  ButtonVariantType,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
+  ThemeType,
+} from "basicui";
 import "./response.css";
 type AssessmentResponse = {
   _id: string;
@@ -22,6 +31,9 @@ const ResponsePage = () => {
   const assessmentId = searchParams.get("assessmentId");
   const router = useRouter();
   const [assessmentResponse, setAssessmentResponse] = useState<AssessmentResponse[]>([]);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] =
+  useState(false);
+const [assessmentResponseIdToDelete,setAssessmentResponseIdToDelete ] =useState('');
   useEffect(() => {
     viewResponse();
   }, []);
@@ -81,6 +93,20 @@ const ResponsePage = () => {
     document.body.removeChild(link);
   };
 
+  const deleteAssessmentResponse = (id:any) => {
+    setIsDeleteDialogOpen(true);
+    setAssessmentResponseIdToDelete(id);
+  }
+
+  const handleDeleteAssessmentResponse = () => {
+    deleteAssessmentResponseById(assessmentResponseIdToDelete).then(
+      (response)=>{
+        console.log(response);
+        setIsDeleteDialogOpen(false);
+      }
+    )
+  }
+
   return (
     <div className="page">
       <div className="download-icon">
@@ -125,11 +151,50 @@ const ResponsePage = () => {
                   {item.score}/{item.answered}
                 </td>
                 <td>{percentage.toFixed(2)}%</td>
+                <td><IconButton
+                      theme="danger"
+                      circle
+                      onClick={(event:any) => {
+                        event.stopPropagation();
+                        deleteAssessmentResponse(item._id);
+                      }}
+                      variant={ButtonVariantType.outline}
+                    >
+                    <FontAwesomeIcon icon={faTrash} />
+                     </IconButton>
+                </td>
               </tr>
             );
           })}
         </tbody>
       </table>
+
+      
+      <Modal
+        isOpen={isDeleteDialogOpen}
+        onClose={() => setIsDeleteDialogOpen(false)}
+      >
+        <ModalHeader
+          onClose={() => setIsDeleteDialogOpen(false)}
+          heading="Delete assessment response"
+        />
+
+        <ModalBody>
+          <div className="new-assessment-dialog">
+            <p>Are you sure to delete this assessment response?</p>
+            <p className ="warning-text">This action can't be reverted.</p>
+          </div>
+        </ModalBody>
+        <ModalFooter>
+          <Button theme={ThemeType.primary} onClick={handleDeleteAssessmentResponse}>
+            <FontAwesomeIcon icon={faCheck} />
+            Confirm
+          </Button>
+          <IconButton onClick={() => setIsDeleteDialogOpen(false)}>
+            <FontAwesomeIcon icon={faClose} />
+          </IconButton>
+        </ModalFooter>
+      </Modal>
     </div>
   );
 };

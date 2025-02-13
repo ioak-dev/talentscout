@@ -34,7 +34,7 @@ import {
 } from "@/lib/RouteAuthorizationHook";
 import ListItem from "./ListItem";
 import EditAssessmentDialog from "../edit/EditAssessmentDialog";
-import { saveAssessmentById } from "../edit/service";
+import { deleteAssessmentById, saveAssessmentById } from "../edit/service";
 
 const AssessmentsPage = () => {
   const { hasPermissions, isRouteAuthorized } = useRouteAuthorization("1");
@@ -59,6 +59,9 @@ const AssessmentsPage = () => {
     name: "",
     skillSet: "",
   });
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] =
+    useState(false);
+  const [assessmentIdToDelete,setAssessmentIdToDelete ] =useState('');
 
   useEffect(() => {
     AuthorizationState.subscribe((message) => {
@@ -132,12 +135,27 @@ const AssessmentsPage = () => {
   const handleSaveAssessment = (data: Assessment) => {
     setIsEditAssessmentDialogOpen(false);
     saveAssessmentById(assessmentData?._id || "", data, authorization).then(
-      (response) => {
+      (response:any) => {
         console.log(response)
         fetchAssessments();
       }
     );
   };
+
+  const deleteAssessment = (id:any) => {
+    setAssessmentIdToDelete(id);
+    setIsDeleteDialogOpen(true);
+  }
+
+  const handleDeleteAssessment = (id:any) => {
+    deleteAssessmentById(assessmentIdToDelete).then(
+      (response:any)=>{
+        console.log(response);
+        setIsDeleteDialogOpen(false);
+      }
+    )
+  }
+
 
   if (!isRouteAuthorized) {
     return <></>;
@@ -168,7 +186,8 @@ const AssessmentsPage = () => {
                 data={item}
                 handleEditAssessment={handleEditAssessment}
                 authorization={authorization}
-                fetchAssessments={fetchAssessments}/>
+                fetchAssessments={fetchAssessments}
+                deleteAssessment={deleteAssessment}/>
             ))}
           </div>
           {data?.length == 0 && (
@@ -209,6 +228,33 @@ const AssessmentsPage = () => {
           </IconButton>
         </ModalFooter>
       </Modal>
+
+      <Modal
+        isOpen={isDeleteDialogOpen}
+        onClose={() => setIsDeleteDialogOpen(false)}
+      >
+        <ModalHeader
+          onClose={() => setIsDeleteDialogOpen(false)}
+          heading="Delete assessment"
+        />
+
+        <ModalBody>
+          <div className="new-assessment-dialog">
+            <p>Are you sure to delete this assessment?</p>
+            <p className ="warning-text">This action can't be reverted.</p>
+          </div>
+        </ModalBody>
+        <ModalFooter>
+          <Button theme={ThemeType.primary} onClick={handleDeleteAssessment}>
+            <FontAwesomeIcon icon={faCheck} />
+            Confirm
+          </Button>
+          <IconButton onClick={() => setIsDeleteDialogOpen(false)}>
+            <FontAwesomeIcon icon={faClose} />
+          </IconButton>
+        </ModalFooter>
+      </Modal>
+
       <EditAssessmentDialog
         isOpen={isEditAssessmentDialogOpen}
         onClose={() => setIsEditAssessmentDialogOpen(false)}

@@ -21,6 +21,7 @@ import {
   faPlay,
   faPause,
   faStop,
+  faTrash
 } from "@fortawesome/free-solid-svg-icons";
 import { changeAssessmentStatus } from "../edit/service";
 
@@ -29,6 +30,7 @@ interface Props {
   handleEditAssessment: any;
   authorization: any;
   fetchAssessments: any;
+  deleteAssessment:any;
 }
 
 const ListItem = (props: Props) => {
@@ -81,9 +83,18 @@ const ListItem = (props: Props) => {
         <div className="assessment-list-item__responses">0 responses</div>
       </div>
       <div className="list-item-actions">
-        <div/>
-        {/* <div className="list-item-status-buttons">
-          {["Draft", "Paused"].includes(props.data.status || "") && (
+        <div className="list-item-status-buttons">
+        <IconButton
+            theme='danger'
+            circle
+            onClick={() =>
+              props.deleteAssessment(props.data._id || "", props.data)
+            }
+            variant={ButtonVariantType.outline}
+          >
+            <FontAwesomeIcon icon={faTrash} />
+          </IconButton>
+           {/*{["Draft", "Paused"].includes(props.data.status || "") && (
             <IconButton
               onClick={() => handleStatusChange("Active")}
               circle
@@ -118,8 +129,8 @@ const ListItem = (props: Props) => {
             >
               <FontAwesomeIcon icon={faStop} />
             </IconButton>
-          )}
-        </div> */}
+          )}*/}
+        </div> 
         <div className="list-item-icon-buttons">
           <IconButton
             circle
